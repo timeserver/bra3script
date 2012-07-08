@@ -10,19 +10,21 @@
 (function() {
 //    console.log("call");
   var COLOR_LIST = [["#FFFF66", 0], ["#9999FF", 0], ["#66FF66", 0], ["#99CCFF", 0], ["#FF99FF", 0], ["#0000CC", 1], ["#CC0000", 1]];
+  var LAND_LIST = {star: "☆", wood: "木", rock: "岩", iron: "鉄", food: "糧"};
   var SAVE_PREFIX = "TokisabaMapTool";
 
   var unionData = {}
   var lordData = {}
   var unionList = Array();
   var lordList = Array();
+  var landList = Array();
   var union = '';
   var lord = '';
   var min = true;
   var ele = document.evaluate('//div[@id="map51-content"]/div/ul/li', document.body, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null)
 
   // Common function
-  var functionAddGlobalStyle = function addGlobalStyle(css) {
+  var functionAddGlobalStyle = function (css) {
     var head, style;
     head = document.getElementsByTagName('head')[0];
     if (!head) {
@@ -34,7 +36,7 @@
     head.appendChild(style);
   }
 
-  var functionCreateRadio = function createRadio(id, name, value, text, checked) {
+  var functionCreateRadio = function (id, name, value, text, checked) {
     var d = document.createElement("div");
     d.style.padding = "2px";
     var r = document.createElement("input");
@@ -55,7 +57,7 @@
     return d;
   }
 
-  var functionCreateCheck = function createCheck(id, name, value, text, checked) {
+  var functionCreateCheck = function (id, name, value, text, checked) {
     var d = document.createElement("div");
     d.style.padding = "2px";
     var r = document.createElement("input");
@@ -76,7 +78,7 @@
     return d;
   }
 
-  var functionCreateAddDelButton = function createAddDelButton(id, value) {
+  var functionCreateAddDelButton = function (id, value) {
     var b = document.createElement("input");
     b.type = "button";
     b.id = id;
@@ -86,7 +88,7 @@
     return b;
   }
 
-  var functionAddColorSet = function addColorSet(prefix_id, color) {
+  var functionAddColorSet = function (prefix_id, color) {
     var d = document.createElement("div");
 
     d.appendChild(functionCreateAddDelButton("del" + prefix_id, "<-"));
@@ -106,7 +108,24 @@
     return d;
   }
 
-  var functionGetSelUnion = function getSelUnion() {
+  var functionAddLandSet = function (id, name) {
+    var d = document.createElement("div");
+    d.style.display = "inline";
+
+    var dc = document.createElement("div");
+    dc.style.display = "inline";
+    dc.innerHTML = "&nbsp;" + name + "&nbsp;";
+    d.appendChild(dc);
+
+    var sc = document.createElement("input");
+    sc.id = "input_land_" + id;
+    sc.style.width = "15px";
+    d.appendChild(sc);
+
+    return d;
+  }
+
+  var functionGetSelUnion = function () {
     val = "";
     if ($("#sel_union").children(":selected").val() != undefined) {
       val = $("#sel_union").children(":selected").val();
@@ -114,7 +133,7 @@
     return val;
   }
 
-  var functionGetSelLord = function getSelLord() {
+  var functionGetSelLord = function () {
     val = "";
     if ($("#sel_lord").children(":selected").val() != undefined) {
       val = $("#sel_lord").children(":selected").val();
@@ -122,7 +141,7 @@
     return val;
   }
 
-  var functionCreateAddDelFunction = function createAddDelFunction(i) {
+  var functionCreateAddDelFunction = function (i) {
     $("#del" + i).click(function() {
       if ($("#color_sel" + i).children(":selected") != "undefined") {
         var selVal = $("#color_sel" + i).children(":selected").val().split(":", 2);
@@ -151,10 +170,10 @@
     });
   }
 
-  var functionUpdateColor = function updateColor() {
+  var functionUpdateColor = function () {
     for (var i = 0; i < ele.snapshotLength; ++i) {
-      var eleA = ele.snapshotItem(i).style.removeProperty("background-color");
-      var eleA = ele.snapshotItem(i).style.removeProperty("color");
+      var eleA = ele.snapshotItem(i).getElementsByTagName("A")[0].style.removeProperty("background-color");
+      var eleA = ele.snapshotItem(i).getElementsByTagName("A")[0].style.removeProperty("color");
     }
 
     for (var key in unionData) {
@@ -171,6 +190,23 @@
         if (COLOR_LIST[lordData[key] - 1][1] == 1) {
           lordList[key][i].getElementsByTagName("A")[0].style.setProperty("color", "white", "");
         }
+      }
+    }
+  }
+
+  var functionSearchLand = function () {
+    functionUpdateColor();
+
+    for (var i = 0; i < landList.length; ++i) {
+      var flag = true;
+      for (var j in LAND_LIST) {
+        if ($("#input_land_" + j).val() != "" && $("#input_land_" + j).val() != landList[i][j]) {
+          flag = false;
+          break;
+        }
+      }
+      if (flag) {
+        landList[i]['dom'].getElementsByTagName("A")[0].style.setProperty("background-color", "#FF0000", "");
       }
     }
   }
@@ -215,6 +251,7 @@
   divTitle.innerHTML = "マップツール";
   divHeader.appendChild(divTitle);
 
+  // Union list
   divBodyLeft.appendChild(functionCreateRadio("radio_union", "sel", 1, "同盟一覧", true));
   var selectUnion = document.createElement("select");
   selectUnion.id = "sel_union";
@@ -222,10 +259,7 @@
   selectUnion.style.width = "110px";
   divBodyLeft.appendChild(selectUnion);
 
-  var radioLord = document.createElement("input");
-  radioLord.type = "radio";
-  radioLord.name = "sel";
-
+  // Rord list
   divBodyLeft.appendChild(functionCreateRadio("radio_lord", "sel", 2, "君主一覧", false));
   var selectLord = document.createElement("select");
   selectLord.id = "sel_lord";
@@ -233,11 +267,28 @@
   selectLord.style.width = "110px";
   divBodyLeft.appendChild(selectLord);
 
+  // Color list and add/delete button
   for (var i = 0; i < COLOR_LIST.length; ++i) {
     divBodyRight.appendChild(functionAddColorSet(i + 1, COLOR_LIST[i][0]));
     functionCreateAddDelFunction(i + 1);
   }
 
+  // Land list
+  var title = document.createElement("div");
+  title.style.height = "20px";
+  title.style.valign = "bottom";
+  title.innerHTML = "資源検索";
+  divBodyRight.appendChild(title);
+  for (var i in LAND_LIST) {
+    divBodyRight.appendChild(functionAddLandSet(i, LAND_LIST[i]));
+  }
+  var buttonSearch = document.createElement("input");
+  buttonSearch.type = "button";
+  buttonSearch.id = "button_search";
+  buttonSearch.value = "検索";
+  divBodyRight.appendChild(buttonSearch);
+
+  // Update/Save button
   var buttonUpdate = document.createElement("input");
   buttonUpdate.type = "button";
   buttonUpdate.id = "button_update";
@@ -278,6 +329,10 @@
     } else {
       GM_setValue(SAVE_PREFIX + "_defaultMin", 0);
     }
+  });
+
+  $('#button_search').click(function() {
+    functionSearchLand();
   });
 
   $.popup = function() {
@@ -327,6 +382,7 @@
   for (var i = 0; i < ele.snapshotLength; ++i) {
     var eleA = ele.snapshotItem(i).getElementsByTagName('a')[0];
     if (eleA && eleA.href.match(/land.php.*/)) {
+      // Union and lord data
       var ret = eleA.getAttribute('onmouseover').match(/<dt[^>]*>君主名<\/dt><dd[^>]*>(.*?)<\/dd>.*?<dt[^>]*>同盟名<\/dt><dd[^>]*>(.*?)<\/dd>/);
       if (ret != null && ret.length == 3) {
         if (lordList[ret[1]] == undefined) {
@@ -338,6 +394,15 @@
           unionList[ret[2]] = Array(ele.snapshotItem(i));
         } else {
           unionList[ret[2]].push(ele.snapshotItem(i));
+        }
+      }
+
+      // Land data
+      if (eleA && eleA.href.match(/land.php.*/)) {
+        var star = eleA.childNodes[0].nodeValue;
+        var ret = eleA.getAttribute('onmouseover').match(/木([0-9]*).*岩([0-9]*).*鉄([0-9]*).*糧([0-9]*)/);
+        if (ret != null && ret.length == 5) {
+          landList.push({dom: ele.snapshotItem(i), star: star, wood: ret[1], rock: ret[2], iron: ret[3], food: ret[4]})
         }
       }
     }
