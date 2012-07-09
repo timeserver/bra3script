@@ -172,8 +172,13 @@
 
   var functionUpdateColor = function () {
     for (var i = 0; i < ele.snapshotLength; ++i) {
-      var eleA = ele.snapshotItem(i).getElementsByTagName("A")[0].style.removeProperty("background-color");
-      var eleA = ele.snapshotItem(i).getElementsByTagName("A")[0].style.removeProperty("color");
+      ele.snapshotItem(i).style.removeProperty("background-color");
+      ele.snapshotItem(i).style.removeProperty("color");
+      var eleA = ele.snapshotItem(i).getElementsByTagName('a')[0];
+      if (eleA) {
+        eleA.style.removeProperty("background-color");
+        eleA.style.removeProperty("color");
+      }
     }
 
     for (var key in unionData) {
@@ -197,17 +202,13 @@
   var functionSearchLand = function () {
     functionUpdateColor();
 
-    for (var i = 0; i < landList.length; ++i) {
-      var flag = true;
+    loop: for (var i = 0; i < landList.length; ++i) {
       for (var j in LAND_LIST) {
         if ($("#input_land_" + j).val() != "" && $("#input_land_" + j).val() != landList[i][j]) {
-          flag = false;
-          break;
+          continue loop;
         }
       }
-      if (flag) {
-        landList[i]['dom'].getElementsByTagName("A")[0].style.setProperty("background-color", "#FF0000", "");
-      }
+      landList[i]['dom'].getElementsByTagName("A")[0].style.setProperty("background-color", "#FF0000", "");
     }
   }
 
@@ -275,18 +276,20 @@
 
   // Land list
   var title = document.createElement("div");
-  title.style.height = "20px";
-  title.style.valign = "bottom";
-  title.innerHTML = "資源検索";
+  title.style.marginTop = "10px";
+  title.innerHTML = "<span style='color: #FF0000'>■</span>資源検索";
   divBodyRight.appendChild(title);
   for (var i in LAND_LIST) {
     divBodyRight.appendChild(functionAddLandSet(i, LAND_LIST[i]));
   }
+  var buttonDiv = document.createElement("div");
+  buttonDiv.style.marginTop = "3px";
   var buttonSearch = document.createElement("input");
   buttonSearch.type = "button";
   buttonSearch.id = "button_search";
   buttonSearch.value = "検索";
-  divBodyRight.appendChild(buttonSearch);
+  buttonDiv.appendChild(buttonSearch);
+  divBodyRight.appendChild(buttonDiv);
 
   // Update/Save button
   var buttonUpdate = document.createElement("input");
