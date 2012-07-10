@@ -1,9 +1,9 @@
 // ==UserScript==
-// @name 	 	 	 	 bro3_Auto_Bilder
-// @namespace 	 	http://at-n2.net/
-// @description 	ブラウザ三国志 自動建築スクリプト By nottisan + 5zen（自動内政改良）2012/04/24 人柱版+本鯖対応
-// @icon 	 	 	 	 http://5zen.info/hokan/icon.png
-// @include 	 	 	http://*.3gokushi.jp/*
+// @name         bro3_Auto_Bilder
+// @namespace    http://at-n2.net/
+// @description  ブラウザ三国志 自動建築スクリプト By nottisan + 5zen（自動内政改良）2012/04/24 人柱版+本鯖対応
+// @icon         http://5zen.info/hokan/icon.png
+// @include      http://*.3gokushi.jp/*
 // @require		 http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js
 // @version		 1.2.3 2012/04/24
 // ==/UserScript==
@@ -18,35 +18,35 @@
 //2010.10.29 市場糧自動変換機能バグ取り完了
 //2010.10.31 糧村化機能実装
 //2010.12.24 数箇所調整+放置ミス対策して勝手に本家として公開ｗ by nottisan
-// 	 	 	 	 	 30分以上拠点画面以外であれば自動で拠点画面へ （自動出兵ツールを使ってる人が居るかもしれないことがあるので、
-// 	 	 	 	 	 出兵選択画面・出兵寸前の画面(/facility/castle_send_troop.php)では動作しません。）
+//           30分以上拠点画面以外であれば自動で拠点画面へ （自動出兵ツールを使ってる人が居るかもしれないことがあるので、
+//           出兵選択画面・出兵寸前の画面(/facility/castle_send_troop.php)では動作しません。）
 //2010.12.31 糧の変換パターンを追加
-// 	 	 	 	 	 平均変換：糧が指定した量になると、３資源で一番少ない物を指定値変換します。
-// 	 	 	 	 	 一括変換：糧が指定した量になると、各指定値で変換します。
-// 	 	 	 	 	 自動内政発動機能を追加（x知識、x技術、呉の治世、王佐の才）のみスキル使用します。
-// 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	拠点表示時にスキルの使用をチェックします。
+//           平均変換：糧が指定した量になると、３資源で一番少ない物を指定値変換します。
+//           一括変換：糧が指定した量になると、各指定値で変換します。
+//           自動内政発動機能を追加（x知識、x技術、呉の治世、王佐の才）のみスキル使用します。
+//                                  拠点表示時にスキルの使用をチェックします。
 //2010.01.02 自動内政発動機能にあった、スキル3つ持ちの武将でないと発動しないバグを修正
-// 	 	 	 	 	 http://krote.blog21.fc2.com/blog-entry-54.htmlのブログを参考にchromeに対応？
-// 	 	 	 	 	 ※テストが不十分ですが、FierFox版に問題無いので載せて公開しました。
+//           http://krote.blog21.fc2.com/blog-entry-54.htmlのブログを参考にchromeに対応？
+//           ※テストが不十分ですが、FierFox版に問題無いので載せて公開しました。
 //2011.02.05 自動内政部分を個別に設定できるようにしました。指定されている内政スキルをカードの上から順番に使用します。
 //2011.05.04 建設レベルを個別に指定できるようにした。
 //2011.05.15 糧自動変換時に資源ごとの保持上限を設定できるようにした。
 //2011.06.22 糧変換部分の保持上限処理を修正
 //2011.09.06 宿舎ビルド＆スクラップ機能内蔵
 //2011.09.07 設定画面表示時に自動巡回停止
-// 	 	 	 	 	 糧一括変換で鉄が変換されないバグを修正( TДT)ｺﾞﾒﾝﾖｰ
-// 	 	 	 	 	 拠点間巡回間隔設定を追加（最低拠点巡回間隔 60sec）
-// 	 	 	 	 	 建築予約後の巡回間隔を10秒に設定
+//           糧一括変換で鉄が変換されないバグを修正( TДT)ｺﾞﾒﾝﾖｰ
+//           拠点間巡回間隔設定を追加（最低拠点巡回間隔 60sec）
+//           建築予約後の巡回間隔を10秒に設定
 //2011.09.27 ブラ三タイマーの機能を内包
-// 	 	 	 	 	 建築が終わった拠点への即座に移動機能を追加
-// 	 	 	 	 	 拠点のレベルが上がらなかった部分を修正
+//           建築が終わった拠点への即座に移動機能を追加
+//           拠点のレベルが上がらなかった部分を修正
 //2011.10.04 拠点巡回部分の再構築。
-// 	 	 	 	 	 建築終わった拠点を優先的に巡回します。
+//           建築終わった拠点を優先的に巡回します。
 //2011.10.11 自動建築しなかったバグを修正
-// 	 	 	 	 	 広告うざいので殺した
-// 	 	 	 	 	 設定画面位置保存のバグ修正
+//           広告うざいので殺した
+//           設定画面位置保存のバグ修正
 //2011.10.12 次元の彼方に飛んで行っていた糧村化オプションの復活
-// 	 	 	 	 	 設定ウィンドウを微妙に透過
+//           設定ウィンドウを微妙に透過
 //2011.10.13 テキストボックスを右揃えにした
 //2011.10.14 自動造兵システム搭載（テスト中）
 //2011.10.15 自動造兵が動かないバグを修正
@@ -54,7 +54,7 @@
 //2011.10.17 自動造兵時の兵数チェックが間違っていたのを修正
 //			 自動造兵時の優先順位を残作成兵数の多いものから降順に処理に変更
 //2011.10.18 自動武器レベルアップ処理の追加
-// 	 	 	 	 	 設定画面の調整
+//           設定画面の調整
 //2011.10.19 自動防具レベルアップ処理の追加
 //			 武器防具のレベルアップ情報をHTMLから取得に変更
 //			 ワンタッチ設定ボタンを追加した
@@ -67,14 +67,14 @@
 //2011.11.14 糧変換部分が上手くいかないのを修正。動くかしら？
 //2011.11.18 武器・防具強化ルーチンの修正。多分動くはず・・・
 //2011.12.01 自動寄付が動かない部分の修正
-// 	 	 	 	 	 拠点チェックが入っていない場合自動処理を行わないように修正
+//           拠点チェックが入っていない場合自動処理を行わないように修正
 //2011.12.06 霧さんの設定画面カスタムを頂戴しました
 //			 武器・防具自動強化にて強化レベル10がある場合のエラーを解消
 //			 微調整（建築完了拠点優先巡回時間を即時→10秒に変更)
 //2011.12.07 宿舎ビルスク時のPOST命令の修正
 //			 リロードタイミングを０秒から１秒へ変更
 //2011.12.02 内政スキル初期化部分修正（追加スキル初期化部分追加） thx p-can さん
-// 	 	 	 	 	 造兵部分配列ズレ修正 thx 霧さん
+//           造兵部分配列ズレ修正 thx 霧さん
 //			 鍛冶場・防具工場データ追加
 //			 　・鍛冶場　　投石機　 Lv 8 to Lv 9 thx ああさん（時間のみ未確定）
 //			 　　　　　　　投石機　 Lv 9 to Lv10 thx ああさん
@@ -88,36 +88,36 @@
 //2011.12.19 武器防具フラグのズレを修正
 //2011.12.23 造兵時のフラグのズレを修正
 //2012.01.11 新プロフィール画面対応
-// 	 	 	 	 	 巡回時間を設定間隔に 0 ~ 180sec をランダムに追加
+//           巡回時間を設定間隔に 0 ~ 180sec をランダムに追加
 //2012.01.12 巡回時間のランダム値を10~60sec に変更
-// 	 	 	 	 	 巡回時間がすごい長くなっていたのを修正
-// 	 	 	 	 	 設定画面リンクを 本家鯖・ハンゲーム鯖 は一番下のCopyrightの横に変更
+//           巡回時間がすごい長くなっていたのを修正
+//           設定画面リンクを 本家鯖・ハンゲーム鯖 は一番下のCopyrightの横に変更
 
 
 
 
 //2012.01.24 逆順巡回を追加
-// 	 	 	 	 	 倉庫上限の95%に達した時点で一番少ない資源に5%自動で変換する処理を追加
-// 	 	 	 	 	 巡回停止中に巡回しないように修正
+//           倉庫上限の95%に達した時点で一番少ない資源に5%自動で変換する処理を追加
+//           巡回停止中に巡回しないように修正
 
 
 
 
-// 	 	 	 	 	 倉庫上限の95%に達した時点での処理を変更
-// 	 	 	 	 	 	 １．木石鉄のどれかが超えた場合３資源の中で一番少ないものに5%を変換する
-// 	 	 	 	 	 	 ２．木石鉄が95%を超えている場合一番多いものの1%を糧に変換する
-// 	 	 	 	 	 	 ３．木石鉄糧が95%を超えている場合それぞれ1%を寄付する
-// 	 	 	 	 	 糧自動変換時に木石鉄が95%を超えていた場合変換しないように変更
-// 	 	 	 	 	 初回インストール時の画面を復活
-// 	 	 	 	 	 初回インストール時に設定画面の常駐をデフォルトでONに変更
+//           倉庫上限の95%に達した時点での処理を変更
+//             １．木石鉄のどれかが超えた場合３資源の中で一番少ないものに5%を変換する
+//             ２．木石鉄が95%を超えている場合一番多いものの1%を糧に変換する
+//             ３．木石鉄糧が95%を超えている場合それぞれ1%を寄付する
+//           糧自動変換時に木石鉄が95%を超えていた場合変換しないように変更
+//           初回インストール時の画面を復活
+//           初回インストール時に設定画面の常駐をデフォルトでONに変更
 //
-// 	 	 	 	 	 初回時の判定修正
+//           初回時の判定修正
 
 
 
 
 //2012.04.09 拠点作成予約を追加
-// 	 	 	 	 	 拠点増減時の拠点リスト自動取得を追加
+//           拠点増減時の拠点リスト自動取得を追加
 //			 拠点自動作成機能の実装（チェックがあまい）
 
 
@@ -135,14 +135,14 @@
 
 
 //2012.04.13 複数の市場がある場合一番レベルの高い市場で変換するように処理を修正
-// 	 	 	 	 	 上記変更に伴い市場変換部の設定は本拠地のみとした
-// 	 	 	 	 	 不評だった資源あふれ時の自動寄付を削除
+//           上記変更に伴い市場変換部の設定は本拠地のみとした
+//           不評だった資源あふれ時の自動寄付を削除
 
 
 
 
 //2012.04.16 市場変換処理周りの修正
-// 	 	 	 	 	 拠点情報取得時の処理の修正（市場データは本拠地から取得）
+//           拠点情報取得時の処理の修正（市場データは本拠地から取得）
 
 
 
@@ -182,72 +182,72 @@ var COLOR_BACK	= "#FFF2BB";	// 各BOX背景色
 
 
 /*!
-* jQuery Cookie Plugin [#l663474e]
-* https://github.com/carhartl/jquery-cookie [#q58fe876]
-* [#hca78286]
-* Copyright 2011, Klaus Hartl [#zadb69fd]
-* Dual licensed under the MIT or GPL Version 2 licenses. [#dd1e8be7]
-* http://www.opensource.org/licenses/mit-license.php [#f5320c17]
-* http://www.opensource.org/licenses/GPL-2.0 [#of8c5ddf]
-*/ [#reab6db1]
+* jQuery Cookie Plugin
+* https://github.com/carhartl/jquery-cookie
+*
+* Copyright 2011, Klaus Hartl
+* Dual licensed under the MIT or GPL Version 2 licenses.
+* http://www.opensource.org/licenses/mit-license.php
+* http://www.opensource.org/licenses/GPL-2.0
+*/
 (function($) {
-	 	 $.cookie = function(key, value, options) {
+    $.cookie = function(key, value, options) {
 
 
 
 
-	 	 	 	 // key and at least value given, set cookie...
-	 	 	 	 if (arguments.length > 1 && (!/Object/.test(Object.prototype.toString.call(value)) || value === null || value === undefined)) {
-	 	 	 	 	 	 options = $.extend({}, options);
+        // key and at least value given, set cookie...
+        if (arguments.length > 1 && (!/Object/.test(Object.prototype.toString.call(value)) || value === null || value === undefined)) {
+            options = $.extend({}, options);
 
 
 
 
-	 	 	 	 	 	 if (value === null || value === undefined) {
-	 	 	 	 	 	 	 	 options.expires = -1;
-	 	 	 	 	 	 }
+            if (value === null || value === undefined) {
+                options.expires = -1;
+            }
 
 
 
 
-	 	 	 	 	 	 if (typeof options.expires === 'number') {
-	 	 	 	 	 	 	 	 var days = options.expires, t = options.expires = new Date();
-	 	 	 	 	 	 	 	 t.setDate(t.getDate() + days);
-	 	 	 	 	 	 }
+            if (typeof options.expires === 'number') {
+                var days = options.expires, t = options.expires = new Date();
+                t.setDate(t.getDate() + days);
+            }
 
 
 
 
-	 	 	 	 	 	 value = String(value);
+            value = String(value);
 
 
 
 
-	 	 	 	 	 	 return (document.cookie = [
-	 	 	 	 	 	 	 	 encodeURIComponent(key), '=', options.raw ? value : encodeURIComponent(value),
-	 	 	 	 	 	 	 	 options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
-	 	 	 	 	 	 	 	 options.path ? '; path=' + options.path : '',
-	 	 	 	 	 	 	 	 options.domain ? '; domain=' + options.domain : '',
-	 	 	 	 	 	 	 	 options.secure ? '; secure' : ''
-	 	 	 	 	 	 ].join(''));
-	 	 	 	 }
+            return (document.cookie = [
+                encodeURIComponent(key), '=', options.raw ? value : encodeURIComponent(value),
+                options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
+                options.path ? '; path=' + options.path : '',
+                options.domain ? '; domain=' + options.domain : '',
+                options.secure ? '; secure' : ''
+            ].join(''));
+        }
 
 
 
 
-	 	 	 	 // key and possibly options given, get cookie...
-	 	 	 	 options = value || {};
-	 	 	 	 var decode = options.raw ? function(s) { return s; } : decodeURIComponent;
+        // key and possibly options given, get cookie...
+        options = value || {};
+        var decode = options.raw ? function(s) { return s; } : decodeURIComponent;
 
 
 
 
-	 	 	 	 var pairs = document.cookie.split('; ');
-	 	 	 	 for (var i = 0, pair; pair = pairs[i] && pairs[i].split('='); i++) {
-	 	 	 	 	 	 if (decode(pair[0]) === key) return decode(pair[1] || ''); // IE saves cookies with empty string as "c; ", e.g. without "=" as opposed to EOMB, thus pair[1] may be undefined
-	 	 	 	 }
-	 	 	 	 return null;
-	 	 };
+        var pairs = document.cookie.split('; ');
+        for (var i = 0, pair; pair = pairs[i] && pairs[i].split('='); i++) {
+            if (decode(pair[0]) === key) return decode(pair[1] || ''); // IE saves cookies with empty string as "c; ", e.g. without "=" as opposed to EOMB, thus pair[1] may be undefined
+        }
+        return null;
+    };
 })(jQuery);
 
 
@@ -262,26 +262,26 @@ j$ = jQuery;
 // 造兵用
 var OPT_SOL_MAX = [0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 var OPT_SOL_ADD = [0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-var OPT_BLD_WOOD 	= 0;
+var OPT_BLD_WOOD  = 0;
 var OPT_BLD_STONE = 0;
-var OPT_BLD_IRON 	= 0;
-var OPT_BLD_RICE 	= 0;
+var OPT_BLD_IRON  = 0;
+var OPT_BLD_RICE  = 0;
 var OPT_BLD_SOL = 0;
 var sort_priority = [];
 var OPT_BKBG_CHK = 0;
 var make_no = [];
-				 	 // 兵種, 	 	 	 No,研究済,作成可能兵数,現在の兵数,最大兵数,現兵数との差,x,y
-make_no["剣兵"] 	 	 = ["剣兵" 	 	,301, 	 	 0, 	 	 	 	 	 0, 	 	 	 	 0, 	 	 	 0, 	 	 	 	 	0,0,0];
-make_no["槍兵"] 	 	 = ["槍兵" 	 	,303, 	 	 0, 	 	 	 	 	 0, 	 	 	 	 1, 	 	 	 0, 	 	 	 	 	0,0,0];
-make_no["弓兵"] 	 	 = ["弓兵" 	 	,308, 	 	 0, 	 	 	 	 	 0, 	 	 	 	 2, 	 	 	 0, 	 	 	 	 	0,0,0];
-make_no["騎兵"] 	 	 = ["騎兵" 	 	,305, 	 	 0, 	 	 	 	 	 0, 	 	 	 	 3, 	 	 	 0, 	 	 	 	 	0,0,0];
-make_no["矛槍兵"] 	 = ["矛槍兵" 	,304, 	 	 0, 	 	 	 	 	 0, 	 	 	 	 4, 	 	 	 0, 	 	 	 	 	0,0,0];
-make_no["弩兵"] 	 	 = ["弩兵" 	 	,309, 	 	 0, 	 	 	 	 	 0, 	 	 	 	 5, 	 	 	 0, 	 	 	 	 	0,0,0];
-make_no["近衛騎兵"] = ["近衛騎兵",307, 	 	 0, 	 	 	 	 	 0, 	 	 	 	 6, 	 	 	 0, 	 	 	 	 	0,0,0];
-make_no["斥候"] 	 	 = ["斥候" 	 	,310, 	 	 0, 	 	 	 	 	 0, 	 	 	 	 7, 	 	 	 0, 	 	 	 	 	0,0,0];
-make_no["斥候騎兵"] = ["斥候騎兵",311, 	 	 0, 	 	 	 	 	 0, 	 	 	 	 8, 	 	 	 0, 	 	 	 	 	0,0,0];
-make_no["衝車"] 	 	 = ["衝車" 	 	,312, 	 	 0, 	 	 	 	 	 0, 	 	 	 	 9, 	 	 	 0, 	 	 	 	 	0,0,0];
-make_no["投石機"] 	 = ["投石機" 	,313, 	 	 0, 	 	 	 	 	 0, 	 	 	 	10, 	 	 	 0, 	 	 	 	 	0,0,0];
+				   // 兵種,       No,研究済,作成可能兵数,現在の兵数,最大兵数,現兵数との差,x,y
+make_no["剣兵"]     = ["剣兵"    ,301,     0,           0,         0,       0,          0,0,0];
+make_no["槍兵"]     = ["槍兵"    ,303,     0,           0,         1,       0,          0,0,0];
+make_no["弓兵"]     = ["弓兵"    ,308,     0,           0,         2,       0,          0,0,0];
+make_no["騎兵"]     = ["騎兵"    ,305,     0,           0,         3,       0,          0,0,0];
+make_no["矛槍兵"]   = ["矛槍兵"  ,304,     0,           0,         4,       0,          0,0,0];
+make_no["弩兵"]     = ["弩兵"    ,309,     0,           0,         5,       0,          0,0,0];
+make_no["近衛騎兵"] = ["近衛騎兵",307,     0,           0,         6,       0,          0,0,0];
+make_no["斥候"]     = ["斥候"    ,310,     0,           0,         7,       0,          0,0,0];
+make_no["斥候騎兵"] = ["斥候騎兵",311,     0,           0,         8,       0,          0,0,0];
+make_no["衝車"]     = ["衝車"    ,312,     0,           0,         9,       0,          0,0,0];
+make_no["投石機"]   = ["投石機"  ,313,     0,           0,        10,       0,          0,0,0];
 
 
 
@@ -368,7 +368,7 @@ var OPT_SOUKO_MAX = 1; //倉庫の最大数
 
 
 //内政用 by nottisan
-// 	 	 	 	 	 	 	1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0
+//              1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0
 var OPT_DOME = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 var OPT_BLD = "AC";
 var OPT_SorH = "DD";
@@ -394,7 +394,7 @@ var VERSION = "1.2.3β+5zen 2012/04/25 人柱版+本鯖対応";	// バージョ�
 
 
 
-var INTERVAL 	= 1000 + Math.floor( Math.random() * 5000 );			// 負荷対策 回線速度によっては正常動作しない時があります。その際は数値を増やしてください。1秒=1000
+var INTERVAL  = 1000 + Math.floor( Math.random() * 5000 );			// 負荷対策 回線速度によっては正常動作しない時があります。その際は数値を増やしてください。1秒=1000
 var INTERVAL2 = 2000 + Math.floor( Math.random() * 5000 );			// 負荷対策 回線速度によっては正常動作しない時があります。その際は数値を増やしてください。1秒=1000
 var HOST = location.hostname; //アクセスURLホスト
 var PGNAME = "_Auto_Bilder_5zen_v1.21_20111019_Rev2"; //グリモン領域への保存時のPGの名前
@@ -406,7 +406,7 @@ var g_MD="";
 
 var SENDTFLG_TIMEOUT = 0;	//タイムアウト画面
 var SENDTFLG_LOGIN_MENU = 1;	//ログイン画面
-var SENDTFLG_LOGIN = 2;	 	 	 	 	//ログイン中
+var SENDTFLG_LOGIN = 2;	        //ログイン中
 var d = document;
 
 
@@ -461,45 +461,45 @@ var TYPE_DELETE = "B"; //建設
 
 
 var OPT_CHKBOX_AVC = 0;
-// 	 	 	 	 	 	 	 	 	拠 木 石 鉄 畑 倉 雀 武 防 練 槍 弓 騎 宿 車 市 訓 水 工 研 大 遠 見 平
-// 	 	 	 	 	 	 	 	 	点 	 	 	 	 	 	 庫 	 	器 具 兵 兵 兵 兵 舎 兵 場 練 車 場 究 宿 征 張 地
-//					 1 	2 	3 	4 	5 	6 	7 	8 	9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
-var OPT_CHKBOX 	 = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+//                  拠 木 石 鉄 畑 倉 雀 武 防 練 槍 弓 騎 宿 車 市 訓 水 工 研 大 遠 見 平
+//                  点             庫    器 具 兵 兵 兵 兵 舎 兵 場 練 車 場 究 宿 征 張 地
+//					 1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+var OPT_CHKBOX   = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 var OPT_CHKBOXLV = [ 8,15,15,15,15,20,10,10,10,10,15,15,15,15,15,10,10,10,10,10,20,20,20, 0];
 var OPT_MAX_LV = "2";
 var OPT_FUC_NAME = ["拠点","伐採所","石切り場","製鉄所","畑","倉庫",
-	 	 	 	 	 	 	 	 	 	 "銅雀台","鍛冶場","防具工場","練兵所","兵舎","弓兵舎",
-	 	 	 	 	 	 	 	 	 	 "厩舎","宿舎","兵器工房","市場","訓練所","水車","工場",
-	 	 	 	 	 	 	 	 	 	 "研究所","大宿舎","遠征訓練所","見張り台","平地"];
+                    "銅雀台","鍛冶場","防具工場","練兵所","兵舎","弓兵舎",
+                    "厩舎","宿舎","兵器工房","市場","訓練所","水車","工場",
+                    "研究所","大宿舎","遠征訓練所","見張り台","平地"];
 
 
 
 
 var OPT_FNID = new Array();
-OPT_FNID["拠点"] = 	 	 	 0	 ;
-OPT_FNID["伐採所"] = 	 	 1	 ;
-OPT_FNID["石切り場"] = 	 2	 ;
-OPT_FNID["製鉄所"] = 	 	 3	 ;
-OPT_FNID["畑"] = 	 	 	 	 4	 ;
-OPT_FNID["倉庫"] = 	 	 	 5	 ;
-OPT_FNID["銅雀台"] = 	 	 6	 ;
-OPT_FNID["鍛冶場"] = 	 	 7	 ;
-OPT_FNID["防具工場"] = 	 8	 ;
-OPT_FNID["練兵所"] = 	 	 9	 ;
-OPT_FNID["兵舎"] = 	 	 	 10	 ;
-OPT_FNID["弓兵舎"] = 	 	 11	 ;
-OPT_FNID["厩舎"] = 	 	 	 12	 ;
-OPT_FNID["宿舎"] = 	 	 	 13	 ;
-OPT_FNID["兵器工房"] = 	 14	 ;
-OPT_FNID["市場"] = 	 	 	 15	 ;
-OPT_FNID["訓練所"] = 	 	 16	 ;
-OPT_FNID["水車"] = 	 	 	 17	 ;
-OPT_FNID["工場"] = 	 	 	 18	 ;
-OPT_FNID["研究所"] = 	 	 19	 ;
-OPT_FNID["大宿舎"] = 	 	 20	 ;
+OPT_FNID["拠点"] =       0	 ;
+OPT_FNID["伐採所"] =     1	 ;
+OPT_FNID["石切り場"] =   2	 ;
+OPT_FNID["製鉄所"] =     3	 ;
+OPT_FNID["畑"] =         4	 ;
+OPT_FNID["倉庫"] =       5	 ;
+OPT_FNID["銅雀台"] =     6	 ;
+OPT_FNID["鍛冶場"] =     7	 ;
+OPT_FNID["防具工場"] =   8	 ;
+OPT_FNID["練兵所"] =     9	 ;
+OPT_FNID["兵舎"] =       10	 ;
+OPT_FNID["弓兵舎"] =     11	 ;
+OPT_FNID["厩舎"] =       12	 ;
+OPT_FNID["宿舎"] =       13	 ;
+OPT_FNID["兵器工房"] =   14	 ;
+OPT_FNID["市場"] =       15	 ;
+OPT_FNID["訓練所"] =     16	 ;
+OPT_FNID["水車"] =       17	 ;
+OPT_FNID["工場"] =       18	 ;
+OPT_FNID["研究所"] =     19	 ;
+OPT_FNID["大宿舎"] =     20	 ;
 OPT_FNID["遠征訓練所"] = 21	 ;
-OPT_FNID["見張り台"] = 	 22	 ;
-//OPT_FNID["修行所"] = 	 	 23	 ;
+OPT_FNID["見張り台"] =   22	 ;
+//OPT_FNID["修行所"] =     23	 ;
 
 
 
@@ -566,15 +566,15 @@ var isMixi = true;
 
 // ＠＠　ここから　＠＠
 var DASkill = [ "■■■■",
-	 	 	 	 	 	 	 	 "伐採知識","伐採技術","弓兵増強",
-	 	 	 	 	 	 	 	 "石切知識","石切技術","槍兵増強",
-	 	 	 	 	 	 	 	 "製鉄知識","製鉄技術","騎兵増強",
-	 	 	 	 	 	 	 	 "食糧知識","食糧技術",
-	 	 	 	 	 	 	 	 "農林知識","農林技術",
-	 	 	 	 	 	 	 	 "加工知識","加工技術",
-	 	 	 	 	 	 	 	 "富国","富国論","富国強兵",
+                "伐採知識","伐採技術","弓兵増強",
+                "石切知識","石切技術","槍兵増強",
+                "製鉄知識","製鉄技術","騎兵増強",
+                "食糧知識","食糧技術",
+                "農林知識","農林技術",
+                "加工知識","加工技術",
+                "富国","富国論","富国強兵",
 				"豊穣","美玉歌舞",
-	 	 	 	 	 	 	 	 "呉の治世","王佐の才"];
+                "呉の治世","王佐の才"];
 //alert(DASkill[1]);
 // ＠＠　ここまで　＠＠
 
@@ -663,7 +663,7 @@ var DBG_Flg = false;
 		getParameter("user_id") == "") {
 		getUserProf(document);
 	}
-	 	 OPT_BUILD_VID = GM_getValue(HOST+PGNAME+"OPT_BUILD_VID" , "" );
+    OPT_BUILD_VID = GM_getValue(HOST+PGNAME+"OPT_BUILD_VID" , "" );
 
 
 
@@ -676,7 +676,7 @@ var DBG_Flg = false;
 		vId = trim(xyElem.snapshotItem(0).innerHTML);
 		Load_OPT(vId)
 		if (OPT_BUILD_VID != getVillageID(vId)) {
-	 	 	 	 	GM_setValue(HOST+PGNAME+"OPT_BUILD_VID" , "" );
+	        GM_setValue(HOST+PGNAME+"OPT_BUILD_VID" , "" );
 			OPT_BUILD_VID = "";
 		}
 		getVillageActions();			// 建築情報の取得
@@ -696,7 +696,7 @@ var DBG_Flg = false;
 		}
 		// 拠点にチェックがある場合建設処理を行う
 		if (tChk1){
-			if (OPT_BLD == "AC") {	
+			if (OPT_BLD == "AC") { 
 				setVillageFacility();	// 拠点建築チェック
 			} else {
 				setVillageFacility2(); 	// 宿舎ビルド＆スクラッチ
@@ -747,20 +747,20 @@ var DBG_Flg = false;
 
 
 /*
-	 	 if (location.pathname == "/card/busyobook_picture.php")
-	 	 {
-	 	 	 	 j$("a[class*=card-link]").each(function ()
-	 	 	 	 {
-	 	 	 	 	 	 var a = j$("span[class=cardno]", j$(this).parent()).text().trim();
-	 	 	 	 	 	 j$(this).parent().append("<input type=button value=トレードで探す>").css({
-	 	 	 	 	 	 	 	 "text-align" : "center", "z-index" : "10"
-	 	 	 	 	 	 }).bind('click', function ()
-	 	 	 	 	 	 {
-	 	 	 	 	 	 	 	 location.href = "http://" + HOST + "/card/trade.php?s=price&o=a&t=no&k=" + a + "&tl=0";
-	 	 	 	 	 	 })
-	 	 	 	 })
-	 	 }
-*/ [#p713ace9]
+    if (location.pathname == "/card/busyobook_picture.php")
+    {
+        j$("a[class*=card-link]").each(function ()
+        {
+            var a = j$("span[class=cardno]", j$(this).parent()).text().trim();
+            j$(this).parent().append("<input type=button value=トレードで探す>").css({
+                "text-align" : "center", "z-index" : "10"
+            }).bind('click', function ()
+            {
+                location.href = "http://" + HOST + "/card/trade.php?s=price&o=a&t=no&k=" + a + "&tl=0";
+            })
+        })
+    }
+*/
 
 
 
@@ -782,33 +782,33 @@ function log() { unsafeWindow.console.log.apply(unsafeWindow.console, Array.slic
 
 //URL読み込み
 function initUrlParams() {
-	 	 var matches = location.search.match(/(?:\?|&)?([^=]+)(?:=([^&]+))?/g);
-	 	 if (matches) {
-	 	 	 	 var param;
-	 	 	 	 var key;
-	 	 	 	 var data;
-	 	 	 	 for(var i = 0 ; i < matches.length ; i++) {
-	 	 	 	 	 	 param = matches[i].match(/(?:\?|&)?([^=]+)(?:=([^&]+))?/);
-	 	 	 	 	 	 key = param[1];
-	 	 	 	 	 	 data = param[2];
+    var matches = location.search.match(/(?:\?|&)?([^=]+)(?:=([^&]+))?/g);
+    if (matches) {
+        var param;
+        var key;
+        var data;
+        for(var i = 0 ; i < matches.length ; i++) {
+            param = matches[i].match(/(?:\?|&)?([^=]+)(?:=([^&]+))?/);
+            key = param[1];
+            data = param[2];
 
 
 
 
-	 	 	 	 	 	 URL_PARAM[key] = '';
-	 	 	 	 	 	 if( param.length == 3 && typeof data == 'string') {
-	 	 	 	 	 	 	 	 URL_PARAM[key] = decodeURIComponent(data);
+            URL_PARAM[key] = '';
+            if( param.length == 3 && typeof data == 'string') {
+                URL_PARAM[key] = decodeURIComponent(data);
 
 
 
 
-	 	 	 	 	 	 	 	 // session id
-	 	 	 	 	 	 	 	 if (key.toLowerCase() == 'ssid') {
-	 	 	 	 	 	 	 	 	 	 SID = key + '=' +data;
-	 	 	 	 	 	 	 	 }
-	 	 	 	 	 	 }
-	 	 	 	 }
-	 	 }
+                // session id
+                if (key.toLowerCase() == 'ssid') {
+                    SID = key + '=' +data;
+                }
+            }
+        }
+    }
 }
 
 
@@ -828,7 +828,7 @@ function settleVillages(z){
 		mURL = mURL.replace(URL_Y,lists[z].y);
 		var tid=setTimeout(function(){
 			GM_xmlhttpRequest({
-				method:"GET",	
+				method:"GET", 
 				url:mURL,
 				headers:{"Content-type":"text/html"},
 				overrideMimeType:'text/html; charset=utf-8',
@@ -845,7 +845,7 @@ function settleVillages(z){
 						mURL = mURL.replace(URL_fID,lists[z].kind);
 						var tid=setTimeout(function(){
 							GM_xmlhttpRequest({
-								method:"GET",	
+								method:"GET", 
 								url:mURL,
 								headers:{"Content-type":"text/html"},
 								overrideMimeType:'text/html; charset=utf-8',
@@ -897,7 +897,7 @@ function settleVillages(z){
 		var villageLength = document.evaluate('//div[@id="lodgment"]/div/ul/li/a',
 			document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null); //拠点数－１になる
 		//作成中の拠点の数
-	 	 	 	 var lists = cloadData("ReserveList", "[]", true, true);
+        var lists = cloadData("ReserveList", "[]", true, true);
 		var x = 0;
 		for (var i=0 ; i<lists.length ; i++) {
 			if(lists[i].status == 2){x++;}
@@ -924,9 +924,9 @@ function settleVillages(z){
 
 // 拠点数の保存情報と現状を比較＆修正 2012.04.09
 function checkVillageLength() {
-	 	 	 	 //データ整理
+        //データ整理
 	var lists = cloadData("ReserveList", "[]", true, true);
-	lists = checkList(lists); 	 	 	 //時間の過ぎたものを削除
+	lists = checkList(lists);       //時間の過ぎたものを削除
 
 
 
@@ -946,8 +946,8 @@ function checkVillageLength() {
 		var ntime = dt.getFullYear() + "-" +
 			(dt.getMonth()+101).toString().substr(-2) + "-" +
 			(dt.getDate()+100).toString().substr(-2) + " " +
-			(dt.getHours()+100).toString().substr(-2) 	+ ":" +
-			(dt.getMinutes()+100).toString().substr(-2) 	+ ":" +
+			(dt.getHours()+100).toString().substr(-2)  + ":" +
+			(dt.getMinutes()+100).toString().substr(-2)  + ":" +
 			(dt.getSeconds()+100).toString().substr(-2);
 		//リストのデータを書き換え
 		var flg = 0;
@@ -973,7 +973,7 @@ function checkVillageLength() {
 	function getUserProfJumpNewVillage(){
 		var tid=setTimeout(function(){
 			GM_xmlhttpRequest({
-				method:"GET",	
+				method:"GET", 
 				url:"http://" + HOST + "/user/",
 				headers:{"Content-type":"text/html"},
 				overrideMimeType:'text/html; charset=utf-8',
@@ -1008,7 +1008,7 @@ function checkVillageLength() {
 				}
 			}
 		}
-*/ [#rbb6f0cf]
+*/
 	}
 
 
@@ -1027,13 +1027,13 @@ function checkVillageLength() {
 		if (villages.length != villageLength.snapshotLength) {
 			setTimeout(function(){
 				GM_xmlhttpRequest({
-					method:"GET",	
+					method:"GET", 
 					url:"http://" + HOST + "/user/",
 					headers:{"Content-type":"text/html"},
 					overrideMimeType:'text/html; charset=utf-8',
 					onload:function(x){
 						var htmldoc = document.createElement("html");
-					 	 	 	 	htmldoc.innerHTML = x.responseText;
+					        htmldoc.innerHTML = x.responseText;
 						getUserProf(htmldoc);
 						var tid=setTimeout(function(){location.reload();},INTERVAL);
 					}
@@ -1046,16 +1046,16 @@ function checkVillageLength() {
 //Beyond系save, load関数
 function csaveData(key, value, local, ev)
 {
-	 	 if( local ) key = location.hostname + key 	+ PGNAME;
-	 	 if( ev ) {
-	 	 	 	 if (window.opera || typeof JSON != 'object') {
-	 	 	 	 	 	 value = toJSON(value);
-	 	 	 	 }
-	 	 	 	 else {
-	 	 	 	 	 	 value = JSON.stringify( value );
-	 	 	 	 }
-	 	 }
-	 	 GM_setValue(key, value );
+    if( local ) key = location.hostname + key  + PGNAME;
+    if( ev ) {
+        if (window.opera || typeof JSON != 'object') {
+            value = toJSON(value);
+        }
+        else {
+            value = JSON.stringify( value );
+        }
+    }
+    GM_setValue(key, value );
 }
 
 
@@ -1063,9 +1063,9 @@ function csaveData(key, value, local, ev)
 
 function cloadData(key, value, local, ev)
 {
-	 	 if( local ) key = location.hostname + key 	+ PGNAME;
-	 	 var ret = GM_getValue(key, value);
-	 	 return ev ? eval('ret='+ret) : ret;
+    if( local ) key = location.hostname + key  + PGNAME;
+    var ret = GM_getValue(key, value);
+    return ev ? eval('ret='+ret) : ret;
 }
 
 
@@ -1109,7 +1109,7 @@ function getAddingVillage(htmldoc) {
 
 
 
-	function addList(tim, kind, status, x, y)	
+	function addList(tim, kind, status, x, y) 
 	{
 		var lists = cloadData("ReserveList", "[]", true, true);
 
@@ -1203,7 +1203,7 @@ function getAddingVillage(htmldoc) {
 		villageLink.style.color = "white";
 		villageLink.style.fontSize = "10px";
 		villageLink.style.textAlign = "center";
-		villageLink.innerHTML = "建設予約 	";
+		villageLink.innerHTML = "建設予約  ";
 		tMenu.snapshotItem(0).appendChild(villageLink);
 
 
@@ -1227,7 +1227,7 @@ function getAddingVillage(htmldoc) {
 		villageLink.style.color = "white";
 		villageLink.style.fontSize = "10px";
 		villageLink.style.textAlign = "center";
-		villageLink.innerHTML = " 	";
+		villageLink.innerHTML = "  ";
 		tMenu.snapshotItem(0).appendChild(villageLink);
 
 
@@ -1258,7 +1258,7 @@ function getAddingVillage(htmldoc) {
 		var msg = "";
 		if (flgAdd == 0){
 			msg += "(" + URL_PARAM.x + "," + URL_PARAM.y + ")への、";
-			 	 	 	if(kind == 220){msg += "村建設予約";
+			      if(kind == 220){msg += "村建設予約";
 			}else if(kind == 222){msg += "砦建設予約";
 			}
 			msg += "を受け付けました。"
@@ -1284,8 +1284,8 @@ function getAddingVillage(htmldoc) {
 		var ntime = dt.getFullYear() + "-" +
 			(dt.getMonth()+101).toString().substr(-2) + "-" +
 			(dt.getDate()+100).toString().substr(-2) + " " +
-			(dt.getHours()+100).toString().substr(-2) 	+ ":" +
-			(dt.getMinutes()+100).toString().substr(-2) 	+ ":" +
+			(dt.getHours()+100).toString().substr(-2)  + ":" +
+			(dt.getMinutes()+100).toString().substr(-2)  + ":" +
 			(dt.getSeconds()+100).toString().substr(-2);
 
 
@@ -1356,7 +1356,7 @@ function addLinkTondenVillage() {
 
 
 		var villageLink = document.createElement("span");
-		villageLink.innerHTML = " 建設予約 	";
+		villageLink.innerHTML = " 建設予約  ";
 		tMenu.snapshotItem(0).appendChild(villageLink);
 
 
@@ -1374,7 +1374,7 @@ function addLinkTondenVillage() {
 
 
 		var villageLink = document.createElement("span");
-		villageLink.innerHTML = " 	";
+		villageLink.innerHTML = "  ";
 		tMenu.snapshotItem(0).appendChild(villageLink);
 
 
@@ -1402,7 +1402,7 @@ function addLinkTondenVillage() {
 		var msg = "";
 		if (flgAdd == 0){
 			msg += "(" + x + "," + y + ")への、";
-			 	 	 	if(kind == 220){msg += "村建設予約";
+			      if(kind == 220){msg += "村建設予約";
 			}else if(kind == 222){msg += "砦建設予約";
 			}
 			msg += "を受け付けました。"
@@ -1428,8 +1428,8 @@ function addLinkTondenVillage() {
 		var ntime = dt.getFullYear() + "-" +
 			(dt.getMonth()+101).toString().substr(-2) + "-" +
 			(dt.getDate()+100).toString().substr(-2) + " " +
-			(dt.getHours()+100).toString().substr(-2) 	+ ":" +
-			(dt.getMinutes()+100).toString().substr(-2) 	+ ":" +
+			(dt.getHours()+100).toString().substr(-2)  + ":" +
+			(dt.getMinutes()+100).toString().substr(-2)  + ":" +
 			(dt.getSeconds()+100).toString().substr(-2);
 
 
@@ -1491,7 +1491,7 @@ function getDeletingVillage(htmldoc) {
 
 
 
-	function addList(tim, kind, status, x, y)	
+	function addList(tim, kind, status, x, y) 
 	{
 		var lists = cloadData("ReserveList", "[]", true, true);
 
@@ -1563,14 +1563,14 @@ function DeleteFacility(_x,_y){
 		mURL = mURL.replace(URL_X,_x);
 		mURL = mURL.replace(URL_Y,_y);
 		GM_xmlhttpRequest({
-			method:"GET",	
+			method:"GET", 
 			url: mURL,
 			headers:{"Content-type":"text/html"},
 			overrideMimeType:'text/html; charset=utf-8',
 			onload:function(x){
 //				console.log(x);
 				var htmldoc = document.createElement("html");
-			 	 	 	 	htmldoc.innerHTML = x.responseText;
+			        htmldoc.innerHTML = x.responseText;
 				var tables = document.evaluate('//*[@name="ssid"]',htmldoc, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
 				var ssid=tables.snapshotItem(0).value;
 
@@ -1611,73 +1611,73 @@ function autoLvup() {
 
 
 	var cost_bk_ken=[
-		[ 165, 	135, 	 0, 	0, 6600],
-		[ 251, 	319, 	 0, 	0, 8910],
-		[ 184, 	596, 	 0,303,11220],
-		[ 351, 	994, 	 0,604,13200],
-		[ 431, 	828,2054, 	0,15180],
-		[ 159, 	848,4294, 	0,17820],
-		[1397, 2301,4519, 	0,19140],
-		[1019, 4458,7260, 	0,21120],
-		[ 	 0,11558,3572, 	0,23100],
-		[ 	 0,19648,6073, 	0,25080],
-		[ 	 0, 	 	0, 	 0, 	0, 	 	0]
+		[ 165,  135,   0,  0, 6600],
+		[ 251,  319,   0,  0, 8910],
+		[ 184,  596,   0,303,11220],
+		[ 351,  994,   0,604,13200],
+		[ 431,  828,2054,  0,15180],
+		[ 159,  848,4294,  0,17820],
+		[1397, 2301,4519,  0,19140],
+		[1019, 4458,7260,  0,21120],
+		[   0,11558,3572,  0,23100],
+		[   0,19648,6073,  0,25080],
+		[   0,    0,   0,  0,    0]
 	];
 	// 槍兵
 	var cost_bk_yari=[
-		[ 1820, 	3575, 	 	0,1105,13500],
-		[ 3640, 	7150, 	 	0,2210,18225],
-		[ 	 	0, 12870, 6552,3978,22950],
-		[ 	 	0, 21879,11138,6763,27000],
-		[10820, 35006,17821, 	 0,31050],
-		[16230, 52510,26732, 	 0,36450],
-		[22722, 73514,37425, 	 0,39150],
-		[30675, 99243,50524, 	 0,43200],
-		[39878,129016,65681, 	 0,47250],
-		[51841,167721,85385, 	 0,51300],
-		[ 	 	0, 	 	 0, 	 	0, 	 0, 	 	0]
+		[ 1820,  3575,    0,1105,13500],
+		[ 3640,  7150,    0,2210,18225],
+		[    0, 12870, 6552,3978,22950],
+		[    0, 21879,11138,6763,27000],
+		[10820, 35006,17821,   0,31050],
+		[16230, 52510,26732,   0,36450],
+		[22722, 73514,37425,   0,39150],
+		[30675, 99243,50524,   0,43200],
+		[39878,129016,65681,   0,47250],
+		[51841,167721,85385,   0,51300],
+		[    0,     0,    0,   0,    0]
 	];
 	// 矛槍兵
 	var cost_bk_hoko=[
-		[ 14000, 	27500, 	 	 	0, 8500,18600],
-		[ 28000, 	55000, 	 	 	0,17000,25380],
-		[ 	 	 0, 104500, 	53200,32300,31620],
-		[ 	 	 0, 188100, 	95760,58140,37200],
-		[ 98838, 319770, 162792, 	 	0,42700],
-		[158141, 511632, 260467, 	 	0,50220],
-		[237211, 767448, 390701, 	 	0,53940],
-		[332096,1074427, 546981, 	 	0,59520],
-		[431724,1396755, 711075, 	 	0,65100],
-		[647587,2095133,1066613, 	 	0,70680],
-		[ 	 	 0, 	 	 	0, 	 	 	0, 	 	0, 	 	0]
+		[ 14000,  27500,      0, 8500,18600],
+		[ 28000,  55000,      0,17000,25380],
+		[     0, 104500,  53200,32300,31620],
+		[     0, 188100,  95760,58140,37200],
+		[ 98838, 319770, 162792,    0,42700],
+		[158141, 511632, 260467,    0,50220],
+		[237211, 767448, 390701,    0,53940],
+		[332096,1074427, 546981,    0,59520],
+		[431724,1396755, 711075,    0,65100],
+		[647587,2095133,1066613,    0,70680],
+		[     0,      0,      0,    0,    0]
 	];
 	// 弓兵
 	var cost_bk_yumi=[
-		[ 	3795, 	 	0, 1173,1932,13500],
-		[ 	7590, 	 	0, 2346,3864,18225],
-		[ 13662, 	 	0, 6995,4223,22950],
-		[ 23225, 	 	0,11824,7179,27000],
-		[ 37161,11486,18918, 	 0,31050],
-		[ 55741,17229,28377, 	 0,36450],
-		[ 78038,39728,24121, 	 0,39150],
-		[105351,53633,32563, 	 0,43200],
-		[122015,49802,77193, 	 0,47250],
-		[178043,55031,90640, 	 0,51300],
-		[ 	 	 0, 	 	0, 	 	0, 	 0, 	 	0]
+		[  3795,    0, 1173,1932,13500],
+		[  7590,    0, 2346,3864,18225],
+		[ 13662,    0, 6995,4223,22950],
+		[ 23225,    0,11824,7179,27000],
+		[ 37161,11486,18918,   0,31050],
+		[ 55741,17229,28377,   0,36450],
+		[ 78038,39728,24121,   0,39150],
+		[105351,53633,32563,   0,43200],
+		[122015,49802,77193,   0,47250],
+		[178043,55031,90640,   0,51300],
+		[     0,    0,    0,   0,    0]
 	];
 	// 弩兵
 	var cost_bk_dokyu=[
-		[ 	30250, 	 	 0, 	 9350,15400,18600],
-		[ 	60500, 	 	 0, 	18700,30800,25110],
-		[ 114950, 	 	 0, 	58520,35530,31620],
-		[ 206910, 	 	 0, 105336,63954,37200],
-		[ 351747,108722, 179071, 	 	0,42780],
-		[ 562795,173955, 286514, 	 	0,50220],
-		[ 844193,429771, 260932, 	 	0,53940],
-		[1181870,601679, 365305, 	 	0,59520],
-		[1368820,558720, 865988, 	 	0,65100],
-		[2320010,717094,1181096, 	 	0,70680],
-		[ 	 	 	0, 	 	 0, 	 	 	0, 	 	0, 	 	0]
+		[  30250,     0,   9350,15400,18600],
+		[  60500,     0,  18700,30800,25110],
+		[ 114950,     0,  58520,35530,31620],
+		[ 206910,     0, 105336,63954,37200],
+		[ 351747,108722, 179071,    0,42780],
+		[ 562795,173955, 286514,    0,50220],
+		[ 844193,429771, 260932,    0,53940],
+		[1181870,601679, 365305,    0,59520],
+		[1368820,558720, 865988,    0,65100],
+		[2320010,717094,1181096,    0,70680],
+		[      0,     0,      0,    0,    0]
 	];
 	// 騎兵
 	var cost_bk_uma=[
@@ -1928,7 +1928,7 @@ function autoLvup() {
 
 
 
-		if (loop == 2) {	
+		if (loop == 2) { 
 
 
 
@@ -2010,22 +2010,22 @@ console.log(type);
 
 
 				GM_xmlhttpRequest({
-					method:"GET",	
+					method:"GET", 
 					url: mURL,
 					headers:{"Content-type":"text/html"},
 					overrideMimeType:'text/html; charset=utf-8',
 					onload:function(x){
 						var htmldoc = document.createElement("html");
-					 	 	 	 	htmldoc.innerHTML = x.responseText;
+					        htmldoc.innerHTML = x.responseText;
 
 
 
 
-						var actionsElem 	= document.evaluate('//th[@class="mainTtl6"]', htmldoc, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-//						var actionsElem2 = document.evaluate('//b[@class="f14"]', 	 	 	 htmldoc, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-						var actionsElem2 = document.evaluate('//b[contains(@class,"f14")]', 	 	 	 htmldoc, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-						var actionsElem3 = document.evaluate('//td[@class="center"]' 	 ,htmldoc, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-						var actionsElem4 = document.evaluate('//td[@class="cost"]' 	 ,htmldoc, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+						var actionsElem  = document.evaluate('//th[@class="mainTtl6"]', htmldoc, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+//						var actionsElem2 = document.evaluate('//b[@class="f14"]',       htmldoc, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+						var actionsElem2 = document.evaluate('//b[contains(@class,"f14")]',       htmldoc, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+						var actionsElem3 = document.evaluate('//td[@class="center"]'   ,htmldoc, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+						var actionsElem4 = document.evaluate('//td[@class="cost"]'   ,htmldoc, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
 
 
 
@@ -2035,7 +2035,7 @@ console.log(type);
 
 
 
-						var actionsElem7 	= document.evaluate('//*[@colspan="4"]', htmldoc, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+						var actionsElem7  = document.evaluate('//*[@colspan="4"]', htmldoc, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
 
 
 
@@ -2049,51 +2049,51 @@ console.log(type);
 						if ( htmldoc.innerHTML.lastIndexOf("を強化する") != -1 ) {
 							for (var i=0;i<actionsElem2.snapshotLength;i++){
 //								htmldoc2.innerHTML = actionsElem4.snapshotItem(i).innerHTML;
-//								var actionsElem5 = document.evaluate('//span[@class="normal"]' 	 ,htmldoc2, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-//								var actionsElem6 = document.evaluate('//span[@class="max90"]' 	 ,htmldoc2, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+//								var actionsElem5 = document.evaluate('//span[@class="normal"]'   ,htmldoc2, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+//								var actionsElem6 = document.evaluate('//span[@class="max90"]'   ,htmldoc2, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
 								var BG_Name = actionsElem.snapshotItem(i+1).innerHTML;
 								var BG_LvNm = actionsElem2.snapshotItem(i).innerHTML.substring(actionsElem2.snapshotItem(i).innerHTML.lastIndexOf("&nbsp;&nbsp;")+12);
-								var BG_UID 	= UnitID[BG_Name];
-								var BG_Lv 	 = actionsElem2.snapshotItem(i).innerHTML.substring(3,actionsElem2.snapshotItem(i).innerHTML.lastIndexOf("&nbsp;")-6);
+								var BG_UID  = UnitID[BG_Name];
+								var BG_Lv   = actionsElem2.snapshotItem(i).innerHTML.substring(3,actionsElem2.snapshotItem(i).innerHTML.lastIndexOf("&nbsp;")-6);
 
 
 
 
-								var BG_WOOD 	= costs[type + BG_Name][BG_Lv][0];
+								var BG_WOOD  = costs[type + BG_Name][BG_Lv][0];
 								var BG_STONE = costs[type + BG_Name][BG_Lv][1];
-								var BG_IRON 	= costs[type + BG_Name][BG_Lv][2];
-								var BG_RICE 	= costs[type + BG_Name][BG_Lv][3];
-								var BG_TIME 	= costs[type + BG_Name][BG_Lv][4];
-								var BG_Go 	 	= (actionsElem3.snapshotItem(i+1).innerHTML.lastIndexOf("を強化する") != -1);
+								var BG_IRON  = costs[type + BG_Name][BG_Lv][2];
+								var BG_RICE  = costs[type + BG_Name][BG_Lv][3];
+								var BG_TIME  = costs[type + BG_Name][BG_Lv][4];
+								var BG_Go    = (actionsElem3.snapshotItem(i+1).innerHTML.lastIndexOf("を強化する") != -1);
 /*
 								if (BG_Lv != 10) {
-									var BG_WOOD 	= actionsElem5.snapshotItem(0).innerHTML;
+									var BG_WOOD  = actionsElem5.snapshotItem(0).innerHTML;
 									var BG_STONE = actionsElem5.snapshotItem(1).innerHTML;
-									var BG_IRON 	= actionsElem6.snapshotItem(0).innerHTML;
-									var BG_RICE 	= actionsElem5.snapshotItem(2).innerHTML;
-									var BG_TIME 	= actionsElem7.snapshotItem(i).innerHTML;
-									var BG_Go 	 	= (actionsElem3.snapshotItem(i+1).innerHTML.lastIndexOf("を強化する") != -1);
+									var BG_IRON  = actionsElem6.snapshotItem(0).innerHTML;
+									var BG_RICE  = actionsElem5.snapshotItem(2).innerHTML;
+									var BG_TIME  = actionsElem7.snapshotItem(i).innerHTML;
+									var BG_Go    = (actionsElem3.snapshotItem(i+1).innerHTML.lastIndexOf("を強化する") != -1);
 								} else {
-									var BG_WOOD 	= 0;
+									var BG_WOOD  = 0;
 									var BG_STONE = 0;
-									var BG_IRON 	= 0;
-									var BG_RICE 	= 0;
-									var BG_TIME 	= 0;
-									var BG_Go 	 	= false;
+									var BG_IRON  = 0;
+									var BG_RICE  = 0;
+									var BG_TIME  = 0;
+									var BG_Go    = false;
 								}
-*/ [#s84d3d62]
+*/
 								console.log(BG_Name + " : " + BG_LvNm + " : " + BG_UID + " : " + BG_Lv + " : " + BG_WOOD + " : " + BG_STONE + " : " + BG_IRON + " : " + BG_RICE + " : " + BG_TIME + " : " + BG_Go);
 								if (type == "鍛冶場") {
-									var BG_GoLv 	= OPT_BK_LV[ ( UnitID[actionsElem.snapshotItem(i+1).innerHTML][0] - 300 ) ];
+									var BG_GoLv  = OPT_BK_LV[ ( UnitID[actionsElem.snapshotItem(i+1).innerHTML][0] - 300 ) ];
 								} else {
-									var BG_GoLv 	= OPT_BG_LV[ ( UnitID[actionsElem.snapshotItem(i+1).innerHTML][0] - 300 ) ];
+									var BG_GoLv  = OPT_BG_LV[ ( UnitID[actionsElem.snapshotItem(i+1).innerHTML][0] - 300 ) ];
 								}
 								if ( checkBKLvup(BG_WOOD,BG_STONE,BG_IRON,BG_RICE,BG_Go,BG_Lv,BG_GoLv) ){
 									x++;
 									Buki[x] = [BG_Name,BG_Lv,BG_LvNm,BG_UID,BG_TIME];
 								}
 							}
-				 	 	 	 	 	 	Buki.sort( function(a, b) { if (a[4] > b[4]) return 1; if (a[4] < b[4]) return -1; return 0;});
+				            Buki.sort( function(a, b) { if (a[4] > b[4]) return 1; if (a[4] < b[4]) return -1; return 0;});
 
 
 
@@ -2147,10 +2147,10 @@ console.log(type);
 
 
 							if (parseInt(hnlv) >= parseInt(hslv)) { return false; }
-							if ((parseInt(hwood) 	+ OPT_BLD_WOOD ) > wood ) { return false; }
+							if ((parseInt(hwood)  + OPT_BLD_WOOD ) > wood ) { return false; }
 							if ((parseInt(hstone) + OPT_BLD_STONE) > stone) { return false; }
-							if ((parseInt(hiron) 	+ OPT_BLD_IRON ) > iron ) { return false; }
-							if ((parseInt(hrice) 	+ OPT_BLD_RICE ) > rice ) { return false; }
+							if ((parseInt(hiron)  + OPT_BLD_IRON ) > iron ) { return false; }
+							if ((parseInt(hrice)  + OPT_BLD_RICE ) > rice ) { return false; }
 							if (hgo == false) { return false; }
 
 
@@ -2296,15 +2296,15 @@ function setVillageFacility() {
 
 
 
-	 	 var tmpName1 = area[i].name;
-	 	 switch (tmpName1) {	
-	 	 	 	 case "村":
-	 	 	 	 case "城":
-	 	 	 	 case "砦":
-			tmpName1 	= "拠点"; 	 	 	 	 	 	 	//
+    var tmpName1 = area[i].name;
+    switch (tmpName1) { 
+        case "村":
+        case "城":
+        case "砦":
+			tmpName1  = "拠点";              //
 			chkFlg = 1;
 			break;
-	 	 }
+    }
 //		alert(tmpName1 + " : " + parseInt(OPT_CHKBOXLV[OPT_FNID[tmpName1]]) );
 		if(parseInt(area[i].lv) >= parseInt(OPT_CHKBOXLV[OPT_FNID[tmpName1]])){
 			continue;
@@ -2370,12 +2370,12 @@ function setVillageFacility() {
 					mURL = mURL.replace(URL_viID,getVillageID(vId));
 					mURL = mURL.replace(URL_viSSID,j$.cookie('SSID'));						// 2012.04.24 ssid 追加
 					var tid=setTimeout(function(){location.href = mURL;},INTERVAL);
-*/ [#k8334c4a]
+*/
 
 
 
 
-			 	 	 	 	GM_setValue(HOST+PGNAME+"OPT_BUILD_VID" , getVillageID(vId) );
+			        GM_setValue(HOST+PGNAME+"OPT_BUILD_VID" , getVillageID(vId) );
 					var nowTime = new Date();
 					Reload_Flg = 0;
 					return;
@@ -2665,7 +2665,7 @@ function setVillageFacility2() {
 						var tid=setTimeout(function(){location.reload(false);},INTERVAL);
 					}
 				}
-		 	 	 	 	GM_setValue(HOST+PGNAME+"OPT_BUILD_VID" , getVillageID(vId) );
+		        GM_setValue(HOST+PGNAME+"OPT_BUILD_VID" , getVillageID(vId) );
 				Reload_Flg = 0;
 				return;
 			}
@@ -2740,7 +2740,7 @@ function createFacility(f, area){
 			mURL = mURL.replace(URL_fID,f);
 			mURL = mURL.replace(URL_viSSID,j$.cookie('SSID'));							// 2012.04.24 ssid 追加
 			var tid=setTimeout(function(){location.href = mURL;},INTERVAL);
-*/ [#a52e204a]
+*/
 			var c = {};
 			c['x']=parseInt(Temp[0]);
 			c['y']=parseInt(Temp[1]);
@@ -2872,7 +2872,7 @@ function forwardNextVillage(){
 				if (actionTime > baseTime && actionTime < nextTime && actions[j][IDX2_TYPE] == TYPE_CONSTRUCTION) {
 					var type = actions[j][IDX2_TYPE].charAt(0);
 					nextTime = actionTime;
-					nextURL 	= villages[i][IDX_URL];
+					nextURL  = villages[i][IDX_URL];
 					nextNAME = villages[i][IDX_BASE_NAME];
 				}
 			}
@@ -2926,21 +2926,21 @@ function nextVillageURL(vId2){
 		var tChk1 = GM_getValue(HOST+PGNAME+"OPT_CHKBOX_AVC_"+i, true);
 		if(tChk1==true){
 			chkNextVID.push(villages[i][IDX_URL]);
-	 	 	}
+	    }
 	}
-	 //console.log(location.hostname +" 確認："+chkNextVID);
-	 		
+  //console.log(location.hostname +" 確認："+chkNextVID);
+    
 	// 現在の拠点のインデックスを検索 2012.01.24 逆順処理追加
 	for(var i=0; i<chkNextVID.length;i++){
 		var url = chkNextVID[i];
-	 	 	if(vId2 == getParameter2(chkNextVID[i], "village_id")){
+	    if(vId2 == getParameter2(chkNextVID[i], "village_id")){
 			if (getReverseMode() == false) {
 				// 正巡回
-		 	 	 	 	if(i+1 < chkNextVID.length){
-		 	 	 	 	 	 	nextIndex = i+1;
-		 	 	 	 	}else{
-		 	 	 	 	 	 	nextIndex = 0;
-		 	 	 	 	}
+		        if(i+1 < chkNextVID.length){
+		            nextIndex = i+1;
+		        }else{
+		            nextIndex = 0;
+		        }
 			} else {
 				// 逆巡回
 				if(i-1 < 0){
@@ -2949,8 +2949,8 @@ function nextVillageURL(vId2){
 					nextIndex = i-1;
 				}
 			}
-	 	 	 	 	break;
-	 	 	}
+	        break;
+	    }
 	}
 	return chkNextVID[nextIndex];
 }
@@ -3096,9 +3096,9 @@ function addOpenLinkHtml() {
 			var sidebar = d.evaluate('//*[@title="拠点"]',d, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
 		}
 	 	if (sidebar.snapshotLength == 0){
-		 	 	sidebar = d.evaluate('//*[@class="xy"]',d, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-		 	 	if (sidebar.snapshotLength == 0) return;
-		 	 	isMixi = false;
+		    sidebar = d.evaluate('//*[@class="xy"]',d, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+		    if (sidebar.snapshotLength == 0) return;
+		    isMixi = false;
 		}
 		
 		//自動移動リンク
@@ -3191,56 +3191,56 @@ function clearInifacBox() {
 
 
 
-	var checkbox = $a('//input[@id="OPT_CHKBOX0"]'); 	 checkbox[0].checked = false;
-	var checkbox = $a('//input[@id="OPT_CHKBOX1"]'); 	 checkbox[0].checked = false;
-	var checkbox = $a('//input[@id="OPT_CHKBOX2"]'); 	 checkbox[0].checked = false;
-	var checkbox = $a('//input[@id="OPT_CHKBOX3"]'); 	 checkbox[0].checked = false;
-	var checkbox = $a('//input[@id="OPT_CHKBOX4"]'); 	 checkbox[0].checked = false;
-	var checkbox = $a('//input[@id="OPT_CHKBOX5"]'); 	 checkbox[0].checked = false;
-	var checkbox = $a('//input[@id="OPT_CHKBOX6"]'); 	 checkbox[0].checked = false;
-	var checkbox = $a('//input[@id="OPT_CHKBOX7"]'); 	 checkbox[0].checked = false;
-	var checkbox = $a('//input[@id="OPT_CHKBOX8"]'); 	 checkbox[0].checked = false;
-	var checkbox = $a('//input[@id="OPT_CHKBOX9"]'); 	 checkbox[0].checked = false;
-	var checkbox = $a('//input[@id="OPT_CHKBOX10"]'); 	checkbox[0].checked = false;
-	var checkbox = $a('//input[@id="OPT_CHKBOX11"]'); 	checkbox[0].checked = false;
-	var checkbox = $a('//input[@id="OPT_CHKBOX12"]'); 	checkbox[0].checked = false;
-	var checkbox = $a('//input[@id="OPT_CHKBOX13"]'); 	checkbox[0].checked = false;
-	var checkbox = $a('//input[@id="OPT_CHKBOX14"]'); 	checkbox[0].checked = false;
-	var checkbox = $a('//input[@id="OPT_CHKBOX15"]'); 	checkbox[0].checked = false;
-	var checkbox = $a('//input[@id="OPT_CHKBOX16"]'); 	checkbox[0].checked = false;
-	var checkbox = $a('//input[@id="OPT_CHKBOX17"]'); 	checkbox[0].checked = false;
-	var checkbox = $a('//input[@id="OPT_CHKBOX18"]'); 	checkbox[0].checked = false;
-	var checkbox = $a('//input[@id="OPT_CHKBOX19"]'); 	checkbox[0].checked = false;
-	var checkbox = $a('//input[@id="OPT_CHKBOX20"]'); 	checkbox[0].checked = false;
-	var checkbox = $a('//input[@id="OPT_CHKBOX21"]'); 	checkbox[0].checked = false;
-	var checkbox = $a('//input[@id="OPT_CHKBOX22"]'); 	checkbox[0].checked = false;
+	var checkbox = $a('//input[@id="OPT_CHKBOX0"]');   checkbox[0].checked = false;
+	var checkbox = $a('//input[@id="OPT_CHKBOX1"]');   checkbox[0].checked = false;
+	var checkbox = $a('//input[@id="OPT_CHKBOX2"]');   checkbox[0].checked = false;
+	var checkbox = $a('//input[@id="OPT_CHKBOX3"]');   checkbox[0].checked = false;
+	var checkbox = $a('//input[@id="OPT_CHKBOX4"]');   checkbox[0].checked = false;
+	var checkbox = $a('//input[@id="OPT_CHKBOX5"]');   checkbox[0].checked = false;
+	var checkbox = $a('//input[@id="OPT_CHKBOX6"]');   checkbox[0].checked = false;
+	var checkbox = $a('//input[@id="OPT_CHKBOX7"]');   checkbox[0].checked = false;
+	var checkbox = $a('//input[@id="OPT_CHKBOX8"]');   checkbox[0].checked = false;
+	var checkbox = $a('//input[@id="OPT_CHKBOX9"]');   checkbox[0].checked = false;
+	var checkbox = $a('//input[@id="OPT_CHKBOX10"]');  checkbox[0].checked = false;
+	var checkbox = $a('//input[@id="OPT_CHKBOX11"]');  checkbox[0].checked = false;
+	var checkbox = $a('//input[@id="OPT_CHKBOX12"]');  checkbox[0].checked = false;
+	var checkbox = $a('//input[@id="OPT_CHKBOX13"]');  checkbox[0].checked = false;
+	var checkbox = $a('//input[@id="OPT_CHKBOX14"]');  checkbox[0].checked = false;
+	var checkbox = $a('//input[@id="OPT_CHKBOX15"]');  checkbox[0].checked = false;
+	var checkbox = $a('//input[@id="OPT_CHKBOX16"]');  checkbox[0].checked = false;
+	var checkbox = $a('//input[@id="OPT_CHKBOX17"]');  checkbox[0].checked = false;
+	var checkbox = $a('//input[@id="OPT_CHKBOX18"]');  checkbox[0].checked = false;
+	var checkbox = $a('//input[@id="OPT_CHKBOX19"]');  checkbox[0].checked = false;
+	var checkbox = $a('//input[@id="OPT_CHKBOX20"]');  checkbox[0].checked = false;
+	var checkbox = $a('//input[@id="OPT_CHKBOX21"]');  checkbox[0].checked = false;
+	var checkbox = $a('//input[@id="OPT_CHKBOX22"]');  checkbox[0].checked = false;
 
 
 
 
-	var textbox = $a('//input[@id="OPT_CHKBOXLV0"]'); 	 textbox[0].value = 0;
-	var textbox = $a('//input[@id="OPT_CHKBOXLV1"]'); 	 textbox[0].value = 0;
-	var textbox = $a('//input[@id="OPT_CHKBOXLV2"]'); 	 textbox[0].value = 0;
-	var textbox = $a('//input[@id="OPT_CHKBOXLV3"]'); 	 textbox[0].value = 0;
-	var textbox = $a('//input[@id="OPT_CHKBOXLV4"]'); 	 textbox[0].value = 0;
-	var textbox = $a('//input[@id="OPT_CHKBOXLV5"]'); 	 textbox[0].value = 0;
-	var textbox = $a('//input[@id="OPT_CHKBOXLV6"]'); 	 textbox[0].value = 0;
-	var textbox = $a('//input[@id="OPT_CHKBOXLV7"]'); 	 textbox[0].value = 0;
-	var textbox = $a('//input[@id="OPT_CHKBOXLV8"]'); 	 textbox[0].value = 0;
-	var textbox = $a('//input[@id="OPT_CHKBOXLV9"]'); 	 textbox[0].value = 0;
-	var textbox = $a('//input[@id="OPT_CHKBOXLV10"]'); 	textbox[0].value = 0;
-	var textbox = $a('//input[@id="OPT_CHKBOXLV11"]'); 	textbox[0].value = 0;
-	var textbox = $a('//input[@id="OPT_CHKBOXLV12"]'); 	textbox[0].value = 0;
-	var textbox = $a('//input[@id="OPT_CHKBOXLV13"]'); 	textbox[0].value = 0;
-	var textbox = $a('//input[@id="OPT_CHKBOXLV14"]'); 	textbox[0].value = 0;
-	var textbox = $a('//input[@id="OPT_CHKBOXLV15"]'); 	textbox[0].value = 0;
-	var textbox = $a('//input[@id="OPT_CHKBOXLV16"]'); 	textbox[0].value = 0;
-	var textbox = $a('//input[@id="OPT_CHKBOXLV17"]'); 	textbox[0].value = 0;
-	var textbox = $a('//input[@id="OPT_CHKBOXLV18"]'); 	textbox[0].value = 0;
-	var textbox = $a('//input[@id="OPT_CHKBOXLV19"]'); 	textbox[0].value = 0;
-	var textbox = $a('//input[@id="OPT_CHKBOXLV20"]'); 	textbox[0].value = 0;
-	var textbox = $a('//input[@id="OPT_CHKBOXLV21"]'); 	textbox[0].value = 0;
-	var textbox = $a('//input[@id="OPT_CHKBOXLV22"]'); 	textbox[0].value = 0;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV0"]');   textbox[0].value = 0;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV1"]');   textbox[0].value = 0;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV2"]');   textbox[0].value = 0;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV3"]');   textbox[0].value = 0;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV4"]');   textbox[0].value = 0;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV5"]');   textbox[0].value = 0;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV6"]');   textbox[0].value = 0;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV7"]');   textbox[0].value = 0;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV8"]');   textbox[0].value = 0;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV9"]');   textbox[0].value = 0;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV10"]');  textbox[0].value = 0;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV11"]');  textbox[0].value = 0;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV12"]');  textbox[0].value = 0;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV13"]');  textbox[0].value = 0;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV14"]');  textbox[0].value = 0;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV15"]');  textbox[0].value = 0;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV16"]');  textbox[0].value = 0;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV17"]');  textbox[0].value = 0;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV18"]');  textbox[0].value = 0;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV19"]');  textbox[0].value = 0;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV20"]');  textbox[0].value = 0;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV21"]');  textbox[0].value = 0;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV22"]');  textbox[0].value = 0;
 	// 内政設定
 	var checkbox = $a('//input[@id="OPT_DOME1"]'); checkbox[0].checked = false; // 伐採知識
 	var checkbox = $a('//input[@id="OPT_DOME2"]'); checkbox[0].checked = false; // 伐採技術
@@ -3265,7 +3265,7 @@ function clearInifacBox() {
 	var checkbox = $a('//input[@id="OPT_DOME21"]'); checkbox[0].checked = false; // 呉の治世
 	var checkbox = $a('//input[@id="OPT_DOME22"]'); checkbox[0].checked = false; // 王佐の才
 	// 糧村オプション
-	var checkbox = $a('//input[@id="OPT_KATEMURA"]'); 	checkbox[0].checked = false; // 糧村化
+	var checkbox = $a('//input[@id="OPT_KATEMURA"]');  checkbox[0].checked = false; // 糧村化
 }
 
 
@@ -3274,56 +3274,56 @@ function clearInifacBox() {
 function InitMilitaryHome(){
 	// 遠征訓練所
 	clearInifacBox();
-	var checkbox = $a('//input[@id="OPT_CHKBOX0"]'); 	 checkbox[0].checked = false;	// 拠点
-	var checkbox = $a('//input[@id="OPT_CHKBOX1"]'); 	 checkbox[0].checked = false;	// 伐採所
-	var checkbox = $a('//input[@id="OPT_CHKBOX2"]'); 	 checkbox[0].checked = false;	// 石切り場
-	var checkbox = $a('//input[@id="OPT_CHKBOX3"]'); 	 checkbox[0].checked = false;	// 製鉄所
-	var checkbox = $a('//input[@id="OPT_CHKBOX4"]'); 	 checkbox[0].checked = true;	// 畑
-	var checkbox = $a('//input[@id="OPT_CHKBOX5"]'); 	 checkbox[0].checked = true;	// 倉庫
-	var checkbox = $a('//input[@id="OPT_CHKBOX6"]'); 	 checkbox[0].checked = true;	// 銅雀台
-	var checkbox = $a('//input[@id="OPT_CHKBOX7"]'); 	 checkbox[0].checked = true;	// 鍛冶場
-	var checkbox = $a('//input[@id="OPT_CHKBOX8"]'); 	 checkbox[0].checked = true;	// 防具工場
-	var checkbox = $a('//input[@id="OPT_CHKBOX9"]'); 	 checkbox[0].checked = true;	// 練兵所
-	var checkbox = $a('//input[@id="OPT_CHKBOX10"]'); 	checkbox[0].checked = false;	// 兵舎
-	var checkbox = $a('//input[@id="OPT_CHKBOX11"]'); 	checkbox[0].checked = false;	// 弓兵舎
-	var checkbox = $a('//input[@id="OPT_CHKBOX12"]'); 	checkbox[0].checked = false;	// 厩舎
-	var checkbox = $a('//input[@id="OPT_CHKBOX13"]'); 	checkbox[0].checked = true;	// 宿舎
-	var checkbox = $a('//input[@id="OPT_CHKBOX14"]'); 	checkbox[0].checked = false;	// 兵器工房
-	var checkbox = $a('//input[@id="OPT_CHKBOX15"]'); 	checkbox[0].checked = false;	// 市場
-	var checkbox = $a('//input[@id="OPT_CHKBOX16"]'); 	checkbox[0].checked = true;	// 訓練所
-	var checkbox = $a('//input[@id="OPT_CHKBOX17"]'); 	checkbox[0].checked = false;	// 水車
-	var checkbox = $a('//input[@id="OPT_CHKBOX18"]'); 	checkbox[0].checked = false;	// 工場
-	var checkbox = $a('//input[@id="OPT_CHKBOX19"]'); 	checkbox[0].checked = false;	// 研究所
-	var checkbox = $a('//input[@id="OPT_CHKBOX20"]'); 	checkbox[0].checked = true;	// 大宿舎
-	var checkbox = $a('//input[@id="OPT_CHKBOX21"]'); 	checkbox[0].checked = true;	// 遠征訓練所
-	var checkbox = $a('//input[@id="OPT_CHKBOX22"]'); 	checkbox[0].checked = true;	// 見張り台
+	var checkbox = $a('//input[@id="OPT_CHKBOX0"]');   checkbox[0].checked = false;	// 拠点
+	var checkbox = $a('//input[@id="OPT_CHKBOX1"]');   checkbox[0].checked = false;	// 伐採所
+	var checkbox = $a('//input[@id="OPT_CHKBOX2"]');   checkbox[0].checked = false;	// 石切り場
+	var checkbox = $a('//input[@id="OPT_CHKBOX3"]');   checkbox[0].checked = false;	// 製鉄所
+	var checkbox = $a('//input[@id="OPT_CHKBOX4"]');   checkbox[0].checked = true;	// 畑
+	var checkbox = $a('//input[@id="OPT_CHKBOX5"]');   checkbox[0].checked = true;	// 倉庫
+	var checkbox = $a('//input[@id="OPT_CHKBOX6"]');   checkbox[0].checked = true;	// 銅雀台
+	var checkbox = $a('//input[@id="OPT_CHKBOX7"]');   checkbox[0].checked = true;	// 鍛冶場
+	var checkbox = $a('//input[@id="OPT_CHKBOX8"]');   checkbox[0].checked = true;	// 防具工場
+	var checkbox = $a('//input[@id="OPT_CHKBOX9"]');   checkbox[0].checked = true;	// 練兵所
+	var checkbox = $a('//input[@id="OPT_CHKBOX10"]');  checkbox[0].checked = false;	// 兵舎
+	var checkbox = $a('//input[@id="OPT_CHKBOX11"]');  checkbox[0].checked = false;	// 弓兵舎
+	var checkbox = $a('//input[@id="OPT_CHKBOX12"]');  checkbox[0].checked = false;	// 厩舎
+	var checkbox = $a('//input[@id="OPT_CHKBOX13"]');  checkbox[0].checked = true;	// 宿舎
+	var checkbox = $a('//input[@id="OPT_CHKBOX14"]');  checkbox[0].checked = false;	// 兵器工房
+	var checkbox = $a('//input[@id="OPT_CHKBOX15"]');  checkbox[0].checked = false;	// 市場
+	var checkbox = $a('//input[@id="OPT_CHKBOX16"]');  checkbox[0].checked = true;	// 訓練所
+	var checkbox = $a('//input[@id="OPT_CHKBOX17"]');  checkbox[0].checked = false;	// 水車
+	var checkbox = $a('//input[@id="OPT_CHKBOX18"]');  checkbox[0].checked = false;	// 工場
+	var checkbox = $a('//input[@id="OPT_CHKBOX19"]');  checkbox[0].checked = false;	// 研究所
+	var checkbox = $a('//input[@id="OPT_CHKBOX20"]');  checkbox[0].checked = true;	// 大宿舎
+	var checkbox = $a('//input[@id="OPT_CHKBOX21"]');  checkbox[0].checked = true;	// 遠征訓練所
+	var checkbox = $a('//input[@id="OPT_CHKBOX22"]');  checkbox[0].checked = true;	// 見張り台
 
 
 
 
-	var textbox = $a('//input[@id="OPT_CHKBOXLV0"]'); 	 textbox[0].value = 0;	// 拠点
-	var textbox = $a('//input[@id="OPT_CHKBOXLV1"]'); 	 textbox[0].value = 0;	// 伐採所
-	var textbox = $a('//input[@id="OPT_CHKBOXLV2"]'); 	 textbox[0].value = 0;	// 石切り場
-	var textbox = $a('//input[@id="OPT_CHKBOXLV3"]'); 	 textbox[0].value = 0;	// 製鉄所
-	var textbox = $a('//input[@id="OPT_CHKBOXLV4"]'); 	 textbox[0].value = 5;	// 畑
-	var textbox = $a('//input[@id="OPT_CHKBOXLV5"]'); 	 textbox[0].value = 1;	// 倉庫
-	var textbox = $a('//input[@id="OPT_CHKBOXLV6"]'); 	 textbox[0].value = 7;	// 銅雀台
-	var textbox = $a('//input[@id="OPT_CHKBOXLV7"]'); 	 textbox[0].value = 5;	// 鍛冶場
-	var textbox = $a('//input[@id="OPT_CHKBOXLV8"]'); 	 textbox[0].value = 7;	// 防具工場
-	var textbox = $a('//input[@id="OPT_CHKBOXLV9"]'); 	 textbox[0].value = 3;	// 練兵所
-	var textbox = $a('//input[@id="OPT_CHKBOXLV10"]'); 	textbox[0].value = 0;	// 兵舎
-	var textbox = $a('//input[@id="OPT_CHKBOXLV11"]'); 	textbox[0].value = 0;	// 弓兵舎
-	var textbox = $a('//input[@id="OPT_CHKBOXLV12"]'); 	textbox[0].value = 0;	// 厩舎
-	var textbox = $a('//input[@id="OPT_CHKBOXLV13"]'); 	textbox[0].value = 15;	// 宿舎
-	var textbox = $a('//input[@id="OPT_CHKBOXLV14"]'); 	textbox[0].value = 0;	// 兵器工房
-	var textbox = $a('//input[@id="OPT_CHKBOXLV15"]'); 	textbox[0].value = 0;	// 市場
-	var textbox = $a('//input[@id="OPT_CHKBOXLV16"]'); 	textbox[0].value = 5;	// 訓練所
-	var textbox = $a('//input[@id="OPT_CHKBOXLV17"]'); 	textbox[0].value = 0;	// 水車
-	var textbox = $a('//input[@id="OPT_CHKBOXLV18"]'); 	textbox[0].value = 0;	// 工場
-	var textbox = $a('//input[@id="OPT_CHKBOXLV19"]'); 	textbox[0].value = 0;	// 研究所
-	var textbox = $a('//input[@id="OPT_CHKBOXLV20"]'); 	textbox[0].value = 8;	// 大宿舎
-	var textbox = $a('//input[@id="OPT_CHKBOXLV21"]'); 	textbox[0].value = 10;	// 遠征訓練所
-	var textbox = $a('//input[@id="OPT_CHKBOXLV22"]'); 	textbox[0].value = 8;	// 見張り台
+	var textbox = $a('//input[@id="OPT_CHKBOXLV0"]');   textbox[0].value = 0;	// 拠点
+	var textbox = $a('//input[@id="OPT_CHKBOXLV1"]');   textbox[0].value = 0;	// 伐採所
+	var textbox = $a('//input[@id="OPT_CHKBOXLV2"]');   textbox[0].value = 0;	// 石切り場
+	var textbox = $a('//input[@id="OPT_CHKBOXLV3"]');   textbox[0].value = 0;	// 製鉄所
+	var textbox = $a('//input[@id="OPT_CHKBOXLV4"]');   textbox[0].value = 5;	// 畑
+	var textbox = $a('//input[@id="OPT_CHKBOXLV5"]');   textbox[0].value = 1;	// 倉庫
+	var textbox = $a('//input[@id="OPT_CHKBOXLV6"]');   textbox[0].value = 7;	// 銅雀台
+	var textbox = $a('//input[@id="OPT_CHKBOXLV7"]');   textbox[0].value = 5;	// 鍛冶場
+	var textbox = $a('//input[@id="OPT_CHKBOXLV8"]');   textbox[0].value = 7;	// 防具工場
+	var textbox = $a('//input[@id="OPT_CHKBOXLV9"]');   textbox[0].value = 3;	// 練兵所
+	var textbox = $a('//input[@id="OPT_CHKBOXLV10"]');  textbox[0].value = 0;	// 兵舎
+	var textbox = $a('//input[@id="OPT_CHKBOXLV11"]');  textbox[0].value = 0;	// 弓兵舎
+	var textbox = $a('//input[@id="OPT_CHKBOXLV12"]');  textbox[0].value = 0;	// 厩舎
+	var textbox = $a('//input[@id="OPT_CHKBOXLV13"]');  textbox[0].value = 15;	// 宿舎
+	var textbox = $a('//input[@id="OPT_CHKBOXLV14"]');  textbox[0].value = 0;	// 兵器工房
+	var textbox = $a('//input[@id="OPT_CHKBOXLV15"]');  textbox[0].value = 0;	// 市場
+	var textbox = $a('//input[@id="OPT_CHKBOXLV16"]');  textbox[0].value = 5;	// 訓練所
+	var textbox = $a('//input[@id="OPT_CHKBOXLV17"]');  textbox[0].value = 0;	// 水車
+	var textbox = $a('//input[@id="OPT_CHKBOXLV18"]');  textbox[0].value = 0;	// 工場
+	var textbox = $a('//input[@id="OPT_CHKBOXLV19"]');  textbox[0].value = 0;	// 研究所
+	var textbox = $a('//input[@id="OPT_CHKBOXLV20"]');  textbox[0].value = 8;	// 大宿舎
+	var textbox = $a('//input[@id="OPT_CHKBOXLV21"]');  textbox[0].value = 10;	// 遠征訓練所
+	var textbox = $a('//input[@id="OPT_CHKBOXLV22"]');  textbox[0].value = 8;	// 見張り台
 	// 内政設定
 	var checkbox = $a('//input[@id="OPT_DOME1"]'); checkbox[0].checked = false; // 伐採知識
 	var checkbox = $a('//input[@id="OPT_DOME2"]'); checkbox[0].checked = false; // 伐採技術
@@ -3355,18 +3355,18 @@ function InitMilitaryHome(){
 function InitRiceParadise(){
 	// 糧村
 	clearInifacBox();
-	var checkbox = $a('//input[@id="OPT_CHKBOX0"]'); 	 checkbox[0].checked = true;	// 拠点
-	var checkbox = $a('//input[@id="OPT_CHKBOX4"]'); 	 checkbox[0].checked = true; 	// 畑
-	var checkbox = $a('//input[@id="OPT_CHKBOX5"]'); 	 checkbox[0].checked = true; 	// 倉庫
-	var checkbox = $a('//input[@id="OPT_CHKBOX6"]'); 	 checkbox[0].checked = true; 	// 銅雀台
+	var checkbox = $a('//input[@id="OPT_CHKBOX0"]');   checkbox[0].checked = true;	// 拠点
+	var checkbox = $a('//input[@id="OPT_CHKBOX4"]');   checkbox[0].checked = true;  // 畑
+	var checkbox = $a('//input[@id="OPT_CHKBOX5"]');   checkbox[0].checked = true;  // 倉庫
+	var checkbox = $a('//input[@id="OPT_CHKBOX6"]');   checkbox[0].checked = true;  // 銅雀台
 
 
 
 
-	var textbox = $a('//input[@id="OPT_CHKBOXLV0"]'); 	 textbox[0].value = 10;		// 拠点
-	var textbox = $a('//input[@id="OPT_CHKBOXLV4"]'); 	 textbox[0].value = 15;		// 畑
-	var textbox = $a('//input[@id="OPT_CHKBOXLV5"]'); 	 textbox[0].value = 20;		// 倉庫
-	var textbox = $a('//input[@id="OPT_CHKBOXLV6"]'); 	 textbox[0].value = 10;		// 銅雀台
+	var textbox = $a('//input[@id="OPT_CHKBOXLV0"]');   textbox[0].value = 10;		// 拠点
+	var textbox = $a('//input[@id="OPT_CHKBOXLV4"]');   textbox[0].value = 15;		// 畑
+	var textbox = $a('//input[@id="OPT_CHKBOXLV5"]');   textbox[0].value = 20;		// 倉庫
+	var textbox = $a('//input[@id="OPT_CHKBOXLV6"]');   textbox[0].value = 10;		// 銅雀台
 	// 内政設定
 	var checkbox = $a('//input[@id="OPT_DOME1"]'); checkbox[0].checked = false; // 伐採知識
 	var checkbox = $a('//input[@id="OPT_DOME2"]'); checkbox[0].checked = false; // 伐採技術
@@ -3391,7 +3391,7 @@ function InitRiceParadise(){
 	var checkbox = $a('//input[@id="OPT_DOME21"]'); checkbox[0].checked = false; // 呉の治世
 	var checkbox = $a('//input[@id="OPT_DOME22"]'); checkbox[0].checked = false; // 王佐の才
 	// 糧村オプション
-	var checkbox = $a('//input[@id="OPT_KATEMURA"]'); 	checkbox[0].checked = true; // 糧村化
+	var checkbox = $a('//input[@id="OPT_KATEMURA"]');  checkbox[0].checked = true; // 糧村化
 }
 
 
@@ -3400,24 +3400,24 @@ function InitRiceParadise(){
 function InitResVillage(){
 	// 資源村
 	clearInifacBox();
-	var checkbox = $a('//input[@id="OPT_CHKBOX0"]'); 	 checkbox[0].checked = true;	// 拠点
-	var checkbox = $a('//input[@id="OPT_CHKBOX1"]'); 	 checkbox[0].checked = true;	// 伐採所
-	var checkbox = $a('//input[@id="OPT_CHKBOX2"]'); 	 checkbox[0].checked = true;	// 石切り場
-	var checkbox = $a('//input[@id="OPT_CHKBOX3"]'); 	 checkbox[0].checked = true;	// 製鉄所
-	var checkbox = $a('//input[@id="OPT_CHKBOX4"]'); 	 checkbox[0].checked = true;	// 畑
-	var checkbox = $a('//input[@id="OPT_CHKBOX5"]'); 	 checkbox[0].checked = true;	// 倉庫
-	var checkbox = $a('//input[@id="OPT_CHKBOX6"]'); 	 checkbox[0].checked = true;	// 銅雀台
+	var checkbox = $a('//input[@id="OPT_CHKBOX0"]');   checkbox[0].checked = true;	// 拠点
+	var checkbox = $a('//input[@id="OPT_CHKBOX1"]');   checkbox[0].checked = true;	// 伐採所
+	var checkbox = $a('//input[@id="OPT_CHKBOX2"]');   checkbox[0].checked = true;	// 石切り場
+	var checkbox = $a('//input[@id="OPT_CHKBOX3"]');   checkbox[0].checked = true;	// 製鉄所
+	var checkbox = $a('//input[@id="OPT_CHKBOX4"]');   checkbox[0].checked = true;	// 畑
+	var checkbox = $a('//input[@id="OPT_CHKBOX5"]');   checkbox[0].checked = true;	// 倉庫
+	var checkbox = $a('//input[@id="OPT_CHKBOX6"]');   checkbox[0].checked = true;	// 銅雀台
 
 
 
 
-	var textbox = $a('//input[@id="OPT_CHKBOXLV0"]'); 	 textbox[0].value = 10;
-	var textbox = $a('//input[@id="OPT_CHKBOXLV1"]'); 	 textbox[0].value = 13;
-	var textbox = $a('//input[@id="OPT_CHKBOXLV2"]'); 	 textbox[0].value = 13;
-	var textbox = $a('//input[@id="OPT_CHKBOXLV3"]'); 	 textbox[0].value = 13;
-	var textbox = $a('//input[@id="OPT_CHKBOXLV4"]'); 	 textbox[0].value = 15;
-	var textbox = $a('//input[@id="OPT_CHKBOXLV5"]'); 	 textbox[0].value = 20;
-	var textbox = $a('//input[@id="OPT_CHKBOXLV6"]'); 	 textbox[0].value = 10;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV0"]');   textbox[0].value = 10;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV1"]');   textbox[0].value = 13;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV2"]');   textbox[0].value = 13;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV3"]');   textbox[0].value = 13;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV4"]');   textbox[0].value = 15;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV5"]');   textbox[0].value = 20;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV6"]');   textbox[0].value = 10;
 	// 内政設定
 	var checkbox = $a('//input[@id="OPT_DOME1"]'); checkbox[0].checked = true; // 伐採知識
 	var checkbox = $a('//input[@id="OPT_DOME2"]'); checkbox[0].checked = true; // 伐採技術
@@ -3442,7 +3442,7 @@ function InitResVillage(){
 	var checkbox = $a('//input[@id="OPT_DOME21"]'); checkbox[0].checked = false; // 呉の治世
 	var checkbox = $a('//input[@id="OPT_DOME22"]'); checkbox[0].checked = false; // 王佐の才
 	// 糧村オプション
-	var checkbox = $a('//input[@id="OPT_KATEMURA"]'); 	checkbox[0].checked = false; // 糧村化
+	var checkbox = $a('//input[@id="OPT_KATEMURA"]');  checkbox[0].checked = false; // 糧村化
 }
 
 
@@ -3451,18 +3451,18 @@ function InitResVillage(){
 function InitMilitarySite(){
 	//軍事拠点
 	clearInifacBox();
-	var checkbox = $a('//input[@id="OPT_CHKBOX0"]'); 	 checkbox[0].checked = true;	// 拠点
-	var checkbox = $a('//input[@id="OPT_CHKBOX10"]'); 	checkbox[0].checked = true;	// 兵舎
-	var checkbox = $a('//input[@id="OPT_CHKBOX11"]'); 	checkbox[0].checked = true;	// 弓兵舎
-	var checkbox = $a('//input[@id="OPT_CHKBOX12"]'); 	checkbox[0].checked = true;	// 厩舎
-	var checkbox = $a('//input[@id="OPT_CHKBOX13"]'); 	checkbox[0].checked = true;	// 兵器工房
-	var checkbox = $a('//input[@id="OPT_CHKBOX14"]'); 	checkbox[0].checked = true;	// 宿舎
-	var checkbox = $a('//input[@id="OPT_CHKBOX20"]'); 	checkbox[0].checked = true;	// 大宿舎
+	var checkbox = $a('//input[@id="OPT_CHKBOX0"]');   checkbox[0].checked = true;	// 拠点
+	var checkbox = $a('//input[@id="OPT_CHKBOX10"]');  checkbox[0].checked = true;	// 兵舎
+	var checkbox = $a('//input[@id="OPT_CHKBOX11"]');  checkbox[0].checked = true;	// 弓兵舎
+	var checkbox = $a('//input[@id="OPT_CHKBOX12"]');  checkbox[0].checked = true;	// 厩舎
+	var checkbox = $a('//input[@id="OPT_CHKBOX13"]');  checkbox[0].checked = true;	// 兵器工房
+	var checkbox = $a('//input[@id="OPT_CHKBOX14"]');  checkbox[0].checked = true;	// 宿舎
+	var checkbox = $a('//input[@id="OPT_CHKBOX20"]');  checkbox[0].checked = true;	// 大宿舎
 
 
 
 
-	var textbox = $a('//input[@id="OPT_CHKBOXLV0"]'); 	 textbox[0].value = 10;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV0"]');   textbox[0].value = 10;
 	// 内政設定
 	var checkbox = $a('//input[@id="OPT_DOME1"]'); checkbox[0].checked = false; // 伐採知識
 	var checkbox = $a('//input[@id="OPT_DOME2"]'); checkbox[0].checked = false; // 伐採技術
@@ -3493,10 +3493,10 @@ function InitMilitarySite(){
 
 // 残す資源量のクリア
 function clearInitRemainingRes(){
-	var textbox = $a('//input[@id="OPT_BLD_WOOD"]'); 	textbox[0].value = 0;
+	var textbox = $a('//input[@id="OPT_BLD_WOOD"]');  textbox[0].value = 0;
 	var textbox = $a('//input[@id="OPT_BLD_STONE"]'); textbox[0].value = 0;
-	var textbox = $a('//input[@id="OPT_BLD_IRON"]'); 	textbox[0].value = 0;
-	var textbox = $a('//input[@id="OPT_BLD_RICE"]'); 	textbox[0].value = 0;
+	var textbox = $a('//input[@id="OPT_BLD_IRON"]');  textbox[0].value = 0;
+	var textbox = $a('//input[@id="OPT_BLD_RICE"]');  textbox[0].value = 0;
 }
 
 
@@ -3707,13 +3707,13 @@ function addIniBilderHtml() {
 	// 実行中/停止中ボタン
 	var Button1 = d.createElement("span");
 	if(GM_getValue(HOST+PGNAME+"AutoFlg", true)==true){
-		ccreateButton(Button1, "巡回中", "巡回停止します",	
+		ccreateButton(Button1, "巡回中", "巡回停止します", 
 			function() {
 				GM_setValue(HOST+PGNAME+"AutoFlg", false);
 				location.reload();
 			});
 	} else {
-		ccreateButton(Button1, "停止中", "巡回開始します",	
+		ccreateButton(Button1, "停止中", "巡回開始します", 
 			function() {
 				GM_setValue(HOST+PGNAME+"AutoFlg", true);
 					location.reload();
@@ -3750,11 +3750,11 @@ function addIniBilderHtml() {
 
 
 
-	var stayBox = 	document.createElement("input");
+	var stayBox =  document.createElement("input");
 	stayBox.type = "checkbox";
 	stayBox.style.verticalAlign = "middle";
 	stayBox.checked = getStayMode();
-	stayBox.addEventListener("change",	
+	stayBox.addEventListener("change", 
 		function() {changeStayMode(this.checked)}, true);
 	ButtonBox.appendChild(stayBox);
 
@@ -3778,11 +3778,11 @@ function addIniBilderHtml() {
 
 
 
-	var reverseBox = 	document.createElement("input");
+	var reverseBox =  document.createElement("input");
 	reverseBox.type = "checkbox";
 	reverseBox.style.verticalAlign = "middle";
 	reverseBox.checked = getReverseMode();
-	reverseBox.addEventListener("change",	
+	reverseBox.addEventListener("change", 
 		function() {changeReverseMode(this.checked)}, true);
 	ButtonBox.appendChild(reverseBox);
 
@@ -3817,9 +3817,9 @@ function addIniBilderHtml() {
 
 	var selectBox = document.createElement("select");
 	selectBox.id = "dispMode";
-	selectBox.addEventListener("change",	
+	selectBox.addEventListener("change", 
 		function() {
-	 	 	 	 	GM_setValue(HOST+PGNAME+"OPT_ROUND_TIME1" , document.getElementById("dispMode").value );
+	        GM_setValue(HOST+PGNAME+"OPT_ROUND_TIME1" , document.getElementById("dispMode").value );
 			OPT_ROUND_TIME1 = document.getElementById("dispMode").value
 		}, true);
 	typeDiv.appendChild(selectBox);
@@ -3828,15 +3828,15 @@ function addIniBilderHtml() {
 
 
 	var options = new Array(
-//		new Array("10sec" , LOAD_ROUND_TIME_10),	
-//		new Array("20sec" , LOAD_ROUND_TIME_20),	
-		new Array("30sec" , LOAD_ROUND_TIME_30),	
-		new Array("40sec" , LOAD_ROUND_TIME_40),	
-		new Array("50sec" , LOAD_ROUND_TIME_50),	
-		new Array("60sec" , LOAD_ROUND_TIME_60),	
-		new Array("70sec" , LOAD_ROUND_TIME_70),	
-		new Array("80sec" , LOAD_ROUND_TIME_80),	
-		new Array("90sec" , LOAD_ROUND_TIME_90),	
+//		new Array("10sec" , LOAD_ROUND_TIME_10), 
+//		new Array("20sec" , LOAD_ROUND_TIME_20), 
+		new Array("30sec" , LOAD_ROUND_TIME_30), 
+		new Array("40sec" , LOAD_ROUND_TIME_40), 
+		new Array("50sec" , LOAD_ROUND_TIME_50), 
+		new Array("60sec" , LOAD_ROUND_TIME_60), 
+		new Array("70sec" , LOAD_ROUND_TIME_70), 
+		new Array("80sec" , LOAD_ROUND_TIME_80), 
+		new Array("90sec" , LOAD_ROUND_TIME_90), 
 		new Array("100sec", LOAD_ROUND_TIME_100),
 		new Array("110sec", LOAD_ROUND_TIME_110),
 		new Array("120sec", LOAD_ROUND_TIME_120),
@@ -3913,22 +3913,22 @@ function addIniBilderHtml() {
 		msg.style.margin = "3px";
 		msg.style.color = "#FFFFFF";
 		msg.style.font = 'bold 120% "ＭＳ ゴシック"';
-		msg.innerHTML = "<br>" +	
-	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 "　　インストールありがとうございます。<br>" +	
-		 	 	 	 	 	 	 	 	"　　まずは、プロフィール画面を開いて<br>" +
-		 	 	 	 	 	 	 	 	"　　拠点情報を取得してください。<br>　";
+		msg.innerHTML = "<br>" + 
+                                "　　インストールありがとうございます。<br>" + 
+		                "　　まずは、プロフィール画面を開いて<br>" +
+		                "　　拠点情報を取得してください。<br>　";
 		td.appendChild(msg);
 	} else {
-	 	 	var landElems = document.evaluate(
-	 	 	'//li[@class="on"]/span',
-	 	 	document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+	    var landElems = document.evaluate(
+	    '//li[@class="on"]/span',
+	    document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
 
 
 
 
 		for (var i = 0; i < villages.length; i++) {
 			var vname = villages[i][IDX_BASE_NAME];
-		 	 	var fColor = "#71C4F9";
+		    var fColor = "#71C4F9";
 			var tr = d.createElement("tr");
 			var td = d.createElement("td");
 			tr.style.fontFamily = "ＭＳ ゴシック";
@@ -3975,8 +3975,8 @@ function addIniBilderHtml() {
 
 			var villageText = villages[i][IDX_BASE_NAME];
 			if (villages[i][IDX_URL] != "") {
-				villageText = "<a href=" + villages[i][IDX_URL] +	
-				" style='color:#654634; text-decoration:none'>" +	
+				villageText = "<a href=" + villages[i][IDX_URL] + 
+				" style='color:#654634; text-decoration:none'>" + 
 				villageText + "</a>";
 			}
 			opfacLink.innerHTML = villageText;
@@ -4096,14 +4096,14 @@ function addIniBilderHtml() {
 
 
 		actionDiv.innerHTML = "座標" + vId + " に ";
-			 	if(lists[i].kind == 220){	actionDiv.innerHTML += "「村」";
+			  if(lists[i].kind == 220){	actionDiv.innerHTML += "「村」";
 		}else if(lists[i].kind == 222){	actionDiv.innerHTML += "「砦」";
 		}
-		 	 	 	if(lists[i].status == 0){actionDiv.innerHTML += "作成失敗";
+		      if(lists[i].status == 0){actionDiv.innerHTML += "作成失敗";
 		}else if(lists[i].status == 1){actionDiv.innerHTML += "作成予約";
 		}else if(lists[i].status == 2){actionDiv.innerHTML += "作成中";
 		}else if(lists[i].status == 3){actionDiv.innerHTML += "作成完了";
-		}else if(lists[i].status == 4){actionDiv.innerHTML += "破棄中"; 	
+		}else if(lists[i].status == 4){actionDiv.innerHTML += "破棄中";  
 		}else if(lists[i].status == 5){actionDiv.innerHTML += "破棄完了";
 		}
 		if(lists[i].status == 2 || lists[i].status == 4){
@@ -4319,31 +4319,31 @@ function addInifacHtml(vId) {
 
 
 
-	 	 $e(ABfacContainer, "mousedown", function(event){
-	 	 	 	 	 	 	 	 if( event.target != $("ABfacContainer")) {return false;}
-	 	 	 	 	 	 	 	 g_MD="ABfacContainer";
-	 	 	 	 	 	 	 	 g_MX=event.pageX-parseInt(this.style.left,10);
-	 	 	 	 	 	 	 	 g_MY=event.pageY-parseInt(this.style.top,10);
-	 	 	 	 	 	 	 	 event.preventDefault();});
-	 	 $e(d, "mousemove", function(event){
-	 	 	 	 	 	 	 	 if(g_MD != "ABfacContainer") return true;
-	 	 	 	 	 	 	 	 var ABfacContainer = $("ABfacContainer");
-	 	 	 	 	 	 	 	 if( !ABfacContainer ) return true;
-	 	 	 	 	 	 	 	 var popupLeft = event.pageX - g_MX;
-	 	 	 	 	 	 	 	 var popupTop 	= event.pageY - g_MY;
-	 	 	 	 	 	 	 	 ABfacContainer.style.left = popupLeft + "px";
-	 	 	 	 	 	 	 	 ABfacContainer.style.top = popupTop + "px";
+    $e(ABfacContainer, "mousedown", function(event){
+                if( event.target != $("ABfacContainer")) {return false;}
+                g_MD="ABfacContainer";
+                g_MX=event.pageX-parseInt(this.style.left,10);
+                g_MY=event.pageY-parseInt(this.style.top,10);
+                event.preventDefault();});
+    $e(d, "mousemove", function(event){
+                if(g_MD != "ABfacContainer") return true;
+                var ABfacContainer = $("ABfacContainer");
+                if( !ABfacContainer ) return true;
+                var popupLeft = event.pageX - g_MX;
+                var popupTop  = event.pageY - g_MY;
+                ABfacContainer.style.left = popupLeft + "px";
+                ABfacContainer.style.top = popupTop + "px";
 				//ポップアップ位置を永続保存
 				GM_setValue(location.hostname + PGNAME + "_popup_left2", popupLeft);
 				GM_setValue(location.hostname + PGNAME + "_popup_top2", popupTop);
-	 	 	 	 	 	 	 	 });
-	 	 $e(d, "mouseup", function(event){g_MD="";});
+                });
+    $e(d, "mouseup", function(event){g_MD="";});
 
 
 
 
 	// ===== 作業拠点名 =====
-	var BaseName 	= d.createElement("span");
+	var BaseName  = d.createElement("span");
 		BaseName.style.border ="solid 0px red";
 		BaseName.style.padding = "3px";
 		BaseName.style.font = "bold 120% 'ＭＳ ゴシック'";
@@ -4455,30 +4455,30 @@ function addInifacHtml(vId) {
 
 
 
-	ccreateCheckBoxKai2(td111, "OPT_CHKBOX", 	0, " 拠点 　　　","中央の城・村・砦のLvを上げます。",0);
-	ccreateCheckBoxKai2(td111, "OPT_CHKBOX", 	6, " 銅雀台 　　","自動でLv上げをする建築物にチェックをしてください。",0);
-	 	 ccreateText(td111, "Dummy" , "　", 0);
-	ccreateCheckBoxKai2(td111, "OPT_CHKBOX", 	1, " 伐採所 　　","自動でLv上げをする建築物にチェックをしてください。",0);
-	ccreateCheckBoxKai2(td111, "OPT_CHKBOX", 	2, " 石切り場 　","自動でLv上げをする建築物にチェックをしてください。",0);
-	ccreateCheckBoxKai2(td111, "OPT_CHKBOX", 	3, " 製鉄所 　　","自動でLv上げをする建築物にチェックをしてください。",0);
-	ccreateCheckBoxKai2(td111, "OPT_CHKBOX", 	4, " 畑 　　　　","自動でLv上げをする建築物にチェックをしてください。",0);
-	ccreateCheckBoxKai2(td111, "OPT_CHKBOX", 	5, " 倉庫 　　　","自動でLv上げをする建築物にチェックをしてください。",0);
-	 	 ccreateText(td111, "Dummy" , "　", 0);
-	ccreateCheckBoxKai2(td111, "OPT_CHKBOX", 	7, " 鍛冶場 　　","自動でLv上げをする建築物にチェックをしてください。",0);
-	ccreateCheckBoxKai2(td111, "OPT_CHKBOX", 	8, " 防具工場 　","自動でLv上げをする建築物にチェックをしてください。",0);
+	ccreateCheckBoxKai2(td111, "OPT_CHKBOX",  0, " 拠点 　　　","中央の城・村・砦のLvを上げます。",0);
+	ccreateCheckBoxKai2(td111, "OPT_CHKBOX",  6, " 銅雀台 　　","自動でLv上げをする建築物にチェックをしてください。",0);
+    ccreateText(td111, "Dummy" , "　", 0);
+	ccreateCheckBoxKai2(td111, "OPT_CHKBOX",  1, " 伐採所 　　","自動でLv上げをする建築物にチェックをしてください。",0);
+	ccreateCheckBoxKai2(td111, "OPT_CHKBOX",  2, " 石切り場 　","自動でLv上げをする建築物にチェックをしてください。",0);
+	ccreateCheckBoxKai2(td111, "OPT_CHKBOX",  3, " 製鉄所 　　","自動でLv上げをする建築物にチェックをしてください。",0);
+	ccreateCheckBoxKai2(td111, "OPT_CHKBOX",  4, " 畑 　　　　","自動でLv上げをする建築物にチェックをしてください。",0);
+	ccreateCheckBoxKai2(td111, "OPT_CHKBOX",  5, " 倉庫 　　　","自動でLv上げをする建築物にチェックをしてください。",0);
+    ccreateText(td111, "Dummy" , "　", 0);
+	ccreateCheckBoxKai2(td111, "OPT_CHKBOX",  7, " 鍛冶場 　　","自動でLv上げをする建築物にチェックをしてください。",0);
+	ccreateCheckBoxKai2(td111, "OPT_CHKBOX",  8, " 防具工場 　","自動でLv上げをする建築物にチェックをしてください。",0);
 
 
 
 
-	ccreateCheckBoxKai2(td112, "OPT_CHKBOX", 	9, " 練兵所 　　","自動でLv上げをする建築物にチェックをしてください。",0);
+	ccreateCheckBoxKai2(td112, "OPT_CHKBOX",  9, " 練兵所 　　","自動でLv上げをする建築物にチェックをしてください。",0);
 	ccreateCheckBoxKai2(td112, "OPT_CHKBOX", 10, " 兵舎 　　　","自動でLv上げをする建築物にチェックをしてください。",0);
 	ccreateCheckBoxKai2(td112, "OPT_CHKBOX", 11, " 弓兵舎 　　","自動でLv上げをする建築物にチェックをしてください。",0);
 	ccreateCheckBoxKai2(td112, "OPT_CHKBOX", 12, " 厩舎 　　　","自動でLv上げをする建築物にチェックをしてください。",0);
 	ccreateCheckBoxKai2(td112, "OPT_CHKBOX", 14, " 兵器工房 　","自動でLv上げをする建築物にチェックをしてください。",0);
-	 	 ccreateText(td112, "Dummy" , "　", 0);
+    ccreateText(td112, "Dummy" , "　", 0);
 	ccreateCheckBoxKai2(td112, "OPT_CHKBOX", 13, " 宿舎 　　　","自動でLv上げをする建築物にチェックをしてください。",0);
 	ccreateCheckBoxKai2(td112, "OPT_CHKBOX", 20, " 大宿舎 　　","自動でLv上げをする建築物にチェックをしてください。",0);
-	 	 ccreateText(td112, "Dummy" , "　", 0);
+    ccreateText(td112, "Dummy" , "　", 0);
 	ccreateCheckBoxKai2(td112, "OPT_CHKBOX", 15, " 市場 　　　","自動でLv上げをする建築物にチェックをしてください。",0);
 
 
@@ -4486,20 +4486,20 @@ function addInifacHtml(vId) {
 
 	ccreateCheckBoxKai2(td113, "OPT_CHKBOX", 16, " 訓練所 　　","自動でLv上げをする建築物にチェックをしてください。",0);
 	ccreateCheckBoxKai2(td113, "OPT_CHKBOX", 21, " 遠征訓練所 ","自動でLv上げをする建築物にチェックをしてください。",0);
-	 	 ccreateText(td113, "Dummy" , "　", 0);
+    ccreateText(td113, "Dummy" , "　", 0);
 	ccreateCheckBoxKai2(td113, "OPT_CHKBOX", 17, " 水車 　　　","自動でLv上げをする建築物にチェックをしてください。",0);
 	ccreateCheckBoxKai2(td113, "OPT_CHKBOX", 18, " 工場 　　　","自動でLv上げをする建築物にチェックをしてください。",0);
-	 	 ccreateText(td113, "Dummy" , "　", 0);
+    ccreateText(td113, "Dummy" , "　", 0);
 	ccreateCheckBoxKai2(td113, "OPT_CHKBOX", 19, " 研究所 　　","自動でLv上げをする建築物にチェックをしてください。",0);
 	ccreateCheckBoxKai2(td113, "OPT_CHKBOX", 22, " 見張り台 　","自動でLv上げをする建築物にチェックをしてください。",0);
 
 
 
 
-	ccreateButton(td31, "遠征訓練所" 	, "本拠地に遠征訓練所を建てる設定にします。", 	 	 	 function() {InitMilitaryHome()},85);
-	ccreateButton(td31, "糧村" 	, "糧村の設定にします。", 	 function() {InitRiceParadise()});
-	ccreateButton(td31, "資源村" 	, "資源村の設定にします。", function() {InitResVillage()});
-	ccreateButton(td31, "軍事拠点" 	, "軍事拠点の設定にします。", function() {InitMilitarySite()});
+	ccreateButton(td31, "遠征訓練所"  , "本拠地に遠征訓練所を建てる設定にします。",       function() {InitMilitaryHome()},85);
+	ccreateButton(td31, "糧村"  , "糧村の設定にします。", 	 function() {InitRiceParadise()});
+	ccreateButton(td31, "資源村"  , "資源村の設定にします。", function() {InitResVillage()});
+	ccreateButton(td31, "軍事拠点"  , "軍事拠点の設定にします。", function() {InitMilitarySite()});
 	ccreateButton(td31, "初期化", "自動建設設定を消去します。", function() {clearInifacBox()});
 
 
@@ -4583,47 +4583,47 @@ function addInifacHtml(vId) {
 
 
 
-	ccreateCheckBox(td21, "OPT_DOME1" , OPT_DOME[1] , " " + DASkill[1] + "　", "この都市に来たら、自動的に内政スキル（" + DASkill[1] 	+ "）を発動します。", 0);
-	ccreateCheckBox(td22, "OPT_DOME2" , OPT_DOME[2] , " " + DASkill[2] + "　", "この都市に来たら、自動的に内政スキル（" + DASkill[2] 	+ "）を発動します。", 0);
-	ccreateCheckBox(td23, "OPT_DOME3" , OPT_DOME[3] , " " + DASkill[3] + "　", "この都市に来たら、自動的に内政スキル（" + DASkill[3] 	+ "）を発動します。", 0);
+	ccreateCheckBox(td21, "OPT_DOME1" , OPT_DOME[1] , " " + DASkill[1] + "　", "この都市に来たら、自動的に内政スキル（" + DASkill[1]  + "）を発動します。", 0);
+	ccreateCheckBox(td22, "OPT_DOME2" , OPT_DOME[2] , " " + DASkill[2] + "　", "この都市に来たら、自動的に内政スキル（" + DASkill[2]  + "）を発動します。", 0);
+	ccreateCheckBox(td23, "OPT_DOME3" , OPT_DOME[3] , " " + DASkill[3] + "　", "この都市に来たら、自動的に内政スキル（" + DASkill[3]  + "）を発動します。", 0);
 	ccreateCheckBox(td24, "OPT_DOME12", OPT_DOME[12], " " + DASkill[12] + "　", "この都市に来たら、自動的に内政スキル（" + DASkill[12] + "）を発動します。", 0);
 	ccreateCheckBox(td25, "OPT_DOME13", OPT_DOME[13], " " + DASkill[13] + "　", "この都市に来たら、自動的に内政スキル（" + DASkill[13] + "）を発動します。", 0);
 
 
 
 
-	ccreateCheckBox(td21, "OPT_DOME4" , OPT_DOME[4] , " " + DASkill[4] + "　", "この都市に来たら、自動的に内政スキル（" + DASkill[4] 	+ "）を発動します。", 0);
-	ccreateCheckBox(td22, "OPT_DOME5" , OPT_DOME[5] , " " + DASkill[5] + "　", "この都市に来たら、自動的に内政スキル（" + DASkill[5] 	+ "）を発動します。", 0);
-	ccreateCheckBox(td23, "OPT_DOME6" , OPT_DOME[6] , " " + DASkill[6] + "　", "この都市に来たら、自動的に内政スキル（" + DASkill[6] 	+ "）を発動します。", 0);
+	ccreateCheckBox(td21, "OPT_DOME4" , OPT_DOME[4] , " " + DASkill[4] + "　", "この都市に来たら、自動的に内政スキル（" + DASkill[4]  + "）を発動します。", 0);
+	ccreateCheckBox(td22, "OPT_DOME5" , OPT_DOME[5] , " " + DASkill[5] + "　", "この都市に来たら、自動的に内政スキル（" + DASkill[5]  + "）を発動します。", 0);
+	ccreateCheckBox(td23, "OPT_DOME6" , OPT_DOME[6] , " " + DASkill[6] + "　", "この都市に来たら、自動的に内政スキル（" + DASkill[6]  + "）を発動します。", 0);
 	ccreateCheckBox(td24, "OPT_DOME14", OPT_DOME[14], " " + DASkill[14] + "　", "この都市に来たら、自動的に内政スキル（" + DASkill[14] + "）を発動します。", 0);
 	ccreateCheckBox(td25, "OPT_DOME15", OPT_DOME[15], " " + DASkill[15] + "　", "この都市に来たら、自動的に内政スキル（" + DASkill[15] + "）を発動します。", 0);
 
 
 
 
-	ccreateCheckBox(td21, "OPT_DOME7" , OPT_DOME[7] , " " + DASkill[7] + "　", "この都市に来たら、自動的に内政スキル（" + DASkill[7] 	+ "）を発動します。", 0);
-	ccreateCheckBox(td22, "OPT_DOME8" , OPT_DOME[8] , " " + DASkill[8] + "　", "この都市に来たら、自動的に内政スキル（" + DASkill[8] 	+ "）を発動します。", 0);
-	ccreateCheckBox(td23, "OPT_DOME9" , OPT_DOME[9] , " " + DASkill[9] + "　", "この都市に来たら、自動的に内政スキル（" + DASkill[9] 	+ "）を発動します。", 0);
+	ccreateCheckBox(td21, "OPT_DOME7" , OPT_DOME[7] , " " + DASkill[7] + "　", "この都市に来たら、自動的に内政スキル（" + DASkill[7]  + "）を発動します。", 0);
+	ccreateCheckBox(td22, "OPT_DOME8" , OPT_DOME[8] , " " + DASkill[8] + "　", "この都市に来たら、自動的に内政スキル（" + DASkill[8]  + "）を発動します。", 0);
+	ccreateCheckBox(td23, "OPT_DOME9" , OPT_DOME[9] , " " + DASkill[9] + "　", "この都市に来たら、自動的に内政スキル（" + DASkill[9]  + "）を発動します。", 0);
 	ccreateCheckBox(td24, "OPT_DOME19", OPT_DOME[19], " " + DASkill[19], "この都市に来たら、自動的に内政スキル（" + DASkill[19] + "）を発動します。", 0);
 	ccreateCheckBox(td25, "OPT_DOME20", OPT_DOME[20], " " + DASkill[20], "この都市に来たら、自動的に内政スキル（" + DASkill[20] + "）を発動します。", 0);
 
 
 
 
-	ccreateCheckBox(td21, "OPT_DOME10", OPT_DOME[10], " " + DASkill[10] + "　", "この都市に来たら、自動的に内政スキル（" + DASkill[10] 	+ "）を発動します。", 0);
+	ccreateCheckBox(td21, "OPT_DOME10", OPT_DOME[10], " " + DASkill[10] + "　", "この都市に来たら、自動的に内政スキル（" + DASkill[10]  + "）を発動します。", 0);
 	ccreateCheckBox(td22, "OPT_DOME11", OPT_DOME[11], " " + DASkill[11] + "　", "この都市に来たら、自動的に内政スキル（" + DASkill[11] + "）を発動します。", 0);
-	ccreateCheckBox(td23, "OPT_DOME16", OPT_DOME[16], " " + DASkill[16], "この都市に来たら、自動的に内政スキル（" + DASkill[16] 	+ "）を発動します。", 0);
-	ccreateCheckBox(td24, "OPT_DOME17", OPT_DOME[17], " " + DASkill[17], "この都市に来たら、自動的に内政スキル（" + DASkill[17] 	+ "）を発動します。", 0);
-	ccreateCheckBox(td25, "OPT_DOME18", OPT_DOME[18], " " + DASkill[18], "この都市に来たら、自動的に内政スキル（" + DASkill[18] 	+ "）を発動します。", 0);
+	ccreateCheckBox(td23, "OPT_DOME16", OPT_DOME[16], " " + DASkill[16], "この都市に来たら、自動的に内政スキル（" + DASkill[16]  + "）を発動します。", 0);
+	ccreateCheckBox(td24, "OPT_DOME17", OPT_DOME[17], " " + DASkill[17], "この都市に来たら、自動的に内政スキル（" + DASkill[17]  + "）を発動します。", 0);
+	ccreateCheckBox(td25, "OPT_DOME18", OPT_DOME[18], " " + DASkill[18], "この都市に来たら、自動的に内政スキル（" + DASkill[18]  + "）を発動します。", 0);
 
 
 
 
-	ccreateText 	 	(td21, "Dummy" , "　", 0);
-	ccreateText 	 	(td22, "Dummy" , "　", 0);
-	ccreateText 	 	(td23, "Dummy" , "　", 0);
-	ccreateCheckBox(td24, "OPT_DOME21", OPT_DOME[21], " " + DASkill[21], "この都市に来たら、自動的に内政スキル（" + DASkill[21] 	+ "）を発動します。", 0);
-	ccreateCheckBox(td25, "OPT_DOME22", OPT_DOME[22], " " + DASkill[22], "この都市に来たら、自動的に内政スキル（" + DASkill[22] 	+ "）を発動します。", 0);
+	ccreateText    (td21, "Dummy" , "　", 0);
+	ccreateText    (td22, "Dummy" , "　", 0);
+	ccreateText    (td23, "Dummy" , "　", 0);
+	ccreateCheckBox(td24, "OPT_DOME21", OPT_DOME[21], " " + DASkill[21], "この都市に来たら、自動的に内政スキル（" + DASkill[21]  + "）を発動します。", 0);
+	ccreateCheckBox(td25, "OPT_DOME22", OPT_DOME[22], " " + DASkill[22], "この都市に来たら、自動的に内政スキル（" + DASkill[22]  + "）を発動します。", 0);
 
 
 
@@ -4698,7 +4698,7 @@ function addInifacHtml(vId) {
 
 
 
-	ccreateComboBox(td312, "OPT_ICHIBA_PA",	OPT_ICHIBA_PATS, OPT_ICHIBA_PA,	"変換パターン　　",				"平均変換：糧が一定量になった際に変換指定している一番少ない資源を変換します。 	 一括変換：糧が一定量になった際に指定してある資源を指定値変換します。",5);
+	ccreateComboBox(td312, "OPT_ICHIBA_PA",	OPT_ICHIBA_PATS, OPT_ICHIBA_PA,	"変換パターン　　",				"平均変換：糧が一定量になった際に変換指定している一番少ない資源を変換します。   一括変換：糧が一定量になった際に指定してある資源を指定値変換します。",5);
 	ccreateTextBox(td312, "OPT_MAX_WOOD",	OPT_MAX_WOOD,											"木の最大保持量　",	"木の最大保持量を設定します（0で倉庫上限まで）", 10, 5);
 	ccreateTextBox(td312, "OPT_MAX_STONE",	OPT_MAX_STONE,									"石の最大保持量　",	"石の最大保持量を設定します（0で倉庫上限まで）", 10, 5);
 	ccreateTextBox(td312, "OPT_MAX_IRON",	OPT_MAX_IRON,											"鉄の最大保持量　",	"鉄の最大保持量を設定します（0で倉庫上限まで）", 10, 5);
@@ -4745,7 +4745,7 @@ function addInifacHtml(vId) {
 		td411.style.padding = "3px";
 		td411.style.verticalAlign = "top";
 		ccreateTextBox(td411, "OPT_RISE_KIFU_MAX", OPT_RISE_KIFU_MAX, "糧が右の数量になったら寄付する　","自動で糧を寄付し始める量指定します。", 10, 5);
-		ccreateTextBox(td411, "OPT_RISE_KIFU", OPT_RISE_KIFU, 	 	 	 	 "自動で糧を寄付する量　　　　　　","自動で糧を寄付する量指定します。", 10, 5);
+		ccreateTextBox(td411, "OPT_RISE_KIFU", OPT_RISE_KIFU,         "自動で糧を寄付する量　　　　　　","自動で糧を寄付する量指定します。", 10, 5);
 
 
 
@@ -4802,7 +4802,7 @@ function addInifacHtml(vId) {
 
 		td511.appendChild( createRadioBtn2 ( 'DD', ' 宿舎対象　' ) );
 		td511.appendChild( createRadioBtn2 ( 'HH', ' 畑対象　　' ) );
-		ccreateTextBox(td511, "OPT_MAX", OPT_MAX,	 	"対象施設数　",	"自動で建築/破棄する施設の数。", 5, 3);
+		ccreateTextBox(td511, "OPT_MAX", OPT_MAX,	  "対象施設数　",	"自動で建築/破棄する施設の数。", 5, 3);
 		ccreateTextBox(td511, "OPT_MAXLV", OPT_MAXLV, "対象施設LV　",	"自動で建築/破棄する施設の最大LV。", 5, 3);
 
 
@@ -5353,7 +5353,7 @@ function addInifacHtml(vId) {
 	ccreateButton(td711, "閉じる", "設定内容を保存せず閉じます", function() {
 		closeInifacBox();
 			clearInterval(tidMain2);
-	 	 	 	 	tidMain2=setTimeout(function(){location.reload();},INTERVAL);
+	        tidMain2=setTimeout(function(){location.reload();},INTERVAL);
 	});
 
 
@@ -5474,47 +5474,47 @@ function addInifacHtml(vId) {
 
 // ラジオボタン生成 @@@@ add 2011.09.06
 function createRadioBtn ( value, txt ) {
-	 	 var radioLabel = document.createElement('label');
-	 	 radioLabel.style.display = 'inline-block';
-	 	 radioLabel.style.margin = '0 5px 0 0';
-	 	 radioLabel.style.padding = '0px';
+    var radioLabel = document.createElement('label');
+    radioLabel.style.display = 'inline-block';
+    radioLabel.style.margin = '0 5px 0 0';
+    radioLabel.style.padding = '0px';
 //	dv.style.padding = "2px";
-// 	 	radioLabel.addEventListener ( 'click', function(){GM_setValue( 'tweetOpt', value );}, true );
-	 	 radioLabel.addEventListener ( 'click', function(){ OPT_BLD = value; }, true );
-	 	 var radioLabelText = document.createTextNode(" " + txt);
-	 	 var radioButton = document.createElement('input');
-	 	 radioButton.type = 'radio';
-	 	 radioButton.name = 'tweetOpt';
-	 	 radioButton.value = value;
+//    radioLabel.addEventListener ( 'click', function(){GM_setValue( 'tweetOpt', value );}, true );
+    radioLabel.addEventListener ( 'click', function(){ OPT_BLD = value; }, true );
+    var radioLabelText = document.createTextNode(" " + txt);
+    var radioButton = document.createElement('input');
+    radioButton.type = 'radio';
+    radioButton.name = 'tweetOpt';
+    radioButton.value = value;
 	radioButton.style.verticalAlign = "top";
-// 	 	radioButton.style.margin = '0 2px 0 0';
-	 	 if ( OPT_BLD == value ) radioButton.checked = true;
+//    radioButton.style.margin = '0 2px 0 0';
+    if ( OPT_BLD == value ) radioButton.checked = true;
 //	alert(OPT_BLD + " : " + value);
-	 	 radioLabel.appendChild( radioButton );
-	 	 radioLabel.appendChild( radioLabelText );
-	 	 return radioLabel;
+    radioLabel.appendChild( radioButton );
+    radioLabel.appendChild( radioLabelText );
+    return radioLabel;
 }
 
 
 
 
 function createRadioBtn2 ( value, txt ) {
-	 	 var radioLabel = document.createElement('label');
-	 	 radioLabel.style.display = 'inline-block';
-	 	 radioLabel.style.margin = '0 5px 0 0';
-	 	 radioLabel.style.padding = '0px';
-	 	 radioLabel.addEventListener ( 'click', function(){ OPT_SorH = value; }, true );
-	 	 var radioLabelText = document.createTextNode(txt);
-	 	 var radioButton = document.createElement('input');
-	 	 radioButton.type = 'radio';
-	 	 radioButton.name = 'SorH';
-	 	 radioButton.value = value;
-// 	 	radioButton.style.margin = '0 2px 0 0';
+    var radioLabel = document.createElement('label');
+    radioLabel.style.display = 'inline-block';
+    radioLabel.style.margin = '0 5px 0 0';
+    radioLabel.style.padding = '0px';
+    radioLabel.addEventListener ( 'click', function(){ OPT_SorH = value; }, true );
+    var radioLabelText = document.createTextNode(txt);
+    var radioButton = document.createElement('input');
+    radioButton.type = 'radio';
+    radioButton.name = 'SorH';
+    radioButton.value = value;
+//    radioButton.style.margin = '0 2px 0 0';
 	radioButton.style.verticalAlign = "top";
-	 	 if ( OPT_SorH == value ) radioButton.checked = true;
-	 	 radioLabel.appendChild( radioButton );
-	 	 radioLabel.appendChild( radioLabelText );
-	 	 return radioLabel;
+    if ( OPT_SorH == value ) radioButton.checked = true;
+    radioLabel.appendChild( radioButton );
+    radioLabel.appendChild( radioLabelText );
+    return radioLabel;
 }
 
 
@@ -5597,8 +5597,8 @@ function SaveInifacBox(vId){
 
 
 
-	strSave += OPT_BLD 	 + DELIMIT2;			// 建築 or ビルスク
-	strSave += OPT_SorH 	+ DELIMIT2;			// 畑 or 宿舎
+	strSave += OPT_BLD   + DELIMIT2;			// 建築 or ビルスク
+	strSave += OPT_SorH  + DELIMIT2;			// 畑 or 宿舎
 	strSave += cgetTextBoxValue($("OPT_MAX")) + DELIMIT2;	// 対象上限数
 
 
@@ -5623,10 +5623,10 @@ function SaveInifacBox(vId){
 
 
 
-	strSave += cgetTextBoxValue($("OPT_BLD_WOOD")) 	+ DELIMIT2;	
-	strSave += cgetTextBoxValue($("OPT_BLD_STONE")) + DELIMIT2;	
-	strSave += cgetTextBoxValue($("OPT_BLD_IRON")) 	+ DELIMIT2;	
-	strSave += cgetTextBoxValue($("OPT_BLD_RICE")) 	+ DELIMIT2;	
+	strSave += cgetTextBoxValue($("OPT_BLD_WOOD"))  + DELIMIT2; 
+	strSave += cgetTextBoxValue($("OPT_BLD_STONE")) + DELIMIT2; 
+	strSave += cgetTextBoxValue($("OPT_BLD_IRON"))  + DELIMIT2; 
+	strSave += cgetTextBoxValue($("OPT_BLD_RICE"))  + DELIMIT2; 
 
 
 
@@ -5671,7 +5671,7 @@ function Load_OPT(vId){
 		OPT_KIFU = 0;
 		OPT_RISE_KIFU_MAX = 0;
 		OPT_RISE_KIFU = 0;
-		for(i=1; i<=22; i++){ OPT_DOME[i] 	 	 = 0; }
+		for(i=1; i<=22; i++){ OPT_DOME[i]     = 0; }
 		for(i=0; i<=22; i++){ OPT_CHKBOXLV[i] = 0;}
 		return;
 
@@ -5682,15 +5682,15 @@ function Load_OPT(vId){
 		var villages = loadVillages(HOST+PGNAME);
 		var src2 = GM_getValue(HOST+PGNAME+villages[0][IDX_XY], "");
 		if (src2 == "") {
-			OPT_ICHIBA 	 	= 0;		// 市場自動変換の利用有無
-			OPT_RISE_MAX 	= 0;		// 糧の自動変換開始量
-			OPT_TO_WOOD 	 = 0;		// 木に変換する糧の量
-			OPT_TO_STONE 	= 0;		// 石　　　 〃
-			OPT_TO_IRON 	 = 0;		// 鉄 	 	 	 〃
+			OPT_ICHIBA    = 0;		// 市場自動変換の利用有無
+			OPT_RISE_MAX  = 0;		// 糧の自動変換開始量
+			OPT_TO_WOOD   = 0;		// 木に変換する糧の量
+			OPT_TO_STONE  = 0;		// 石　　　 〃
+			OPT_TO_IRON   = 0;		// 鉄       〃
 			OPT_ICHIBA_PA = 0;		// 変換パターン
-			OPT_MAX_WOOD 	= 0;		// 木の最大保持量（この量を超えたら変換しない）
-			OPT_MAX_STONE = 0;		// 石 	 	〃
-			OPT_MAX_IRON 	= 0;		// 鉄 	 	〃
+			OPT_MAX_WOOD  = 0;		// 木の最大保持量（この量を超えたら変換しない）
+			OPT_MAX_STONE = 0;		// 石    〃
+			OPT_MAX_IRON  = 0;		// 鉄    〃
 		}
 
 
@@ -5700,49 +5700,49 @@ function Load_OPT(vId){
 		OPT_RISE_MAX = parseInt(shiroTemp2[24]);		// 糧の自動変換開始量
 		OPT_TO_WOOD = parseInt(shiroTemp2[25]);			// 木に変換する糧の量
 		OPT_TO_STONE = parseInt(shiroTemp2[26]);		// 石　　　 〃
-		OPT_TO_IRON = parseInt(shiroTemp2[27]);			// 鉄 	 	 	 〃
+		OPT_TO_IRON = parseInt(shiroTemp2[27]);			// 鉄       〃
 		OPT_ICHIBA_PA = shiroTemp2[33];					// 変換パターン
 		OPT_MAX_WOOD = parseInt(shiroTemp2[79]);		// 木の最大保持量（この量を超えたら変換しない）
-		OPT_MAX_STONE = parseInt(shiroTemp2[80]);		// 石 	 	〃
-		OPT_MAX_IRON = parseInt(shiroTemp2[81]);		// 鉄 	 	〃
+		OPT_MAX_STONE = parseInt(shiroTemp2[80]);		// 石    〃
+		OPT_MAX_IRON = parseInt(shiroTemp2[81]);		// 鉄    〃
 
 
 
 
 		// ビルスク情報
-		OPT_BLD 	 = 0;
-		OPT_SorH 	= 0;
-		OPT_MAX 	 = 0;
+		OPT_BLD   = 0;
+		OPT_SorH  = 0;
+		OPT_MAX   = 0;
 		OPT_MAXLV = 0;
-		OPT_MAX 	 = 6;
+		OPT_MAX   = 6;
 		OPT_MAXLV = 6;
 
 
 
 
 		// 兵作成情報
-		for (i=0;i<14;i++){	OPT_SOL_MAX[i] = 0;	OPT_SOL_MAX[i] 	= 0; };
-		for (i=0;i<14;i++){	OPT_SOL_ADD[i] = 0; OPT_SOL_ADD[i] 	= 0; };
-		OPT_BLD_SOL 	 = 0;
-		OPT_BLD_WOOD 	= 0;
+		for (i=0;i<14;i++){	OPT_SOL_MAX[i] = 0;	OPT_SOL_MAX[i]  = 0; };
+		for (i=0;i<14;i++){	OPT_SOL_ADD[i] = 0; OPT_SOL_ADD[i]  = 0; };
+		OPT_BLD_SOL   = 0;
+		OPT_BLD_WOOD  = 0;
 		OPT_BLD_STONE = 0;
-		OPT_BLD_IRON 	= 0;
-		OPT_BLD_RICE 	= 0;
+		OPT_BLD_IRON  = 0;
+		OPT_BLD_RICE  = 0;
 
 
 
 
-		OPT_BLD_WOOD 	= 0;
+		OPT_BLD_WOOD  = 0;
 		OPT_BLD_STONE = 0;
-		OPT_BLD_IRON 	= 0;
-		OPT_BLD_RICE 	= 0;
+		OPT_BLD_IRON  = 0;
+		OPT_BLD_RICE  = 0;
 
 
 
 
-		for (i=0;i<14;i++){	OPT_BK_LV[i] = 0; OPT_BK_LV[i] 	= 0; };
-		for (i=0;i<14;i++){ OPT_BG_LV[i] = 0; OPT_BG_LV[i] 	= 0; };
-		OPT_BKBG_CHK 	= 0;
+		for (i=0;i<14;i++){	OPT_BK_LV[i] = 0; OPT_BK_LV[i]  = 0; };
+		for (i=0;i<14;i++){ OPT_BG_LV[i] = 0; OPT_BG_LV[i]  = 0; };
+		OPT_BKBG_CHK  = 0;
 
 
 
@@ -5784,15 +5784,15 @@ function Load_OPT(vId){
 
 	//自動内政 by nottisan ここから追加
 	// ＠＠　追加　＠＠
-	OPT_DOME[1] 	= parseInt(Temp2[34]);
-	OPT_DOME[2] 	= parseInt(Temp2[35]);
-	OPT_DOME[3] 	= parseInt(Temp2[36]);
-	OPT_DOME[4] 	= parseInt(Temp2[37]);
-	OPT_DOME[5] 	= parseInt(Temp2[38]);
-	OPT_DOME[6] 	= parseInt(Temp2[39]);
-	OPT_DOME[7] 	= parseInt(Temp2[40]);
-	OPT_DOME[8] 	= parseInt(Temp2[41]);
-	OPT_DOME[9] 	= parseInt(Temp2[42]);
+	OPT_DOME[1]  = parseInt(Temp2[34]);
+	OPT_DOME[2]  = parseInt(Temp2[35]);
+	OPT_DOME[3]  = parseInt(Temp2[36]);
+	OPT_DOME[4]  = parseInt(Temp2[37]);
+	OPT_DOME[5]  = parseInt(Temp2[38]);
+	OPT_DOME[6]  = parseInt(Temp2[39]);
+	OPT_DOME[7]  = parseInt(Temp2[40]);
+	OPT_DOME[8]  = parseInt(Temp2[41]);
+	OPT_DOME[9]  = parseInt(Temp2[42]);
 	OPT_DOME[10] = parseInt(Temp2[43]);
 	OPT_DOME[11] = parseInt(Temp2[44]);
 	OPT_DOME[12] = parseInt(Temp2[45]);
@@ -5827,7 +5827,7 @@ function Load_OPT(vId){
 
 
 
-	var shiroTemp 	= src2.split(DELIMIT1);
+	var shiroTemp  = src2.split(DELIMIT1);
 	var shiroTemp2 = shiroTemp[1].split(DELIMIT2);
 
 
@@ -5841,7 +5841,7 @@ function Load_OPT(vId){
 	OPT_RISE_MAX = parseInt(shiroTemp2[24]);		// 糧の自動変換開始量
 	OPT_TO_WOOD = parseInt(shiroTemp2[25]);			// 木に変換する糧の量
 	OPT_TO_STONE = parseInt(shiroTemp2[26]);		// 石　　　 〃
-	OPT_TO_IRON = parseInt(shiroTemp2[27]);			// 鉄 	 	 	 〃
+	OPT_TO_IRON = parseInt(shiroTemp2[27]);			// 鉄       〃
 
 
 
@@ -5852,8 +5852,8 @@ function Load_OPT(vId){
 
 
 	OPT_MAX_WOOD = parseInt(shiroTemp2[79]);		// 木の最大保持量（この量を超えたら変換しない）
-	OPT_MAX_STONE = parseInt(shiroTemp2[80]);		// 石 	 	〃
-	OPT_MAX_IRON = parseInt(shiroTemp2[81]);		// 鉄 	 	〃
+	OPT_MAX_STONE = parseInt(shiroTemp2[80]);		// 石    〃
+	OPT_MAX_IRON = parseInt(shiroTemp2[81]);		// 鉄    〃
 
 
 
@@ -5867,7 +5867,7 @@ function Load_OPT(vId){
 	OPT_RISE_MAX = parseInt(Temp2[24]);			// 糧の自動変換開始量
 	OPT_TO_WOOD = parseInt(Temp2[25]);			// 木に変換する糧の量
 	OPT_TO_STONE = parseInt(Temp2[26]);			// 石　　　 〃
-	OPT_TO_IRON = parseInt(Temp2[27]);			// 鉄 	 	 	 〃
+	OPT_TO_IRON = parseInt(Temp2[27]);			// 鉄       〃
 
 
 
@@ -5878,14 +5878,14 @@ function Load_OPT(vId){
 
 
 	OPT_MAX_WOOD = parseInt(Temp2[79]);			// 木の最大保持量（この量を超えたら変換しない）
-	OPT_MAX_STONE = parseInt(Temp2[80]);		// 石 	 	〃
-	OPT_MAX_IRON = parseInt(Temp2[81]);			// 鉄 	 	〃
-*/ [#j80110a9]
+	OPT_MAX_STONE = parseInt(Temp2[80]);		// 石    〃
+	OPT_MAX_IRON = parseInt(Temp2[81]);			// 鉄    〃
+*/
 // @@@@ add 2011.09.06
 	OPT_BLD = Temp2[82];
 	OPT_SorH = Temp2[83];
-	OPT_MAX 	= Temp2[84];
-	OPT_MAXLV 	= Temp2[85];
+	OPT_MAX  = Temp2[84];
+	OPT_MAXLV  = Temp2[85];
 	if (OPT_MAX == undefined) { OPT_MAX = 6; }
 	if (OPT_MAXLV == undefined || OPT_MAXLV > 15) { OPT_MAXLV = 6; }
 
@@ -5895,36 +5895,36 @@ function Load_OPT(vId){
 	// 兵作成情報
 	for (i=0;i<14;i++){	
 		OPT_SOL_MAX[i] = parseInt(Temp2[86 + i]);
-		if (isNaN(OPT_SOL_MAX[i])) { OPT_SOL_MAX[i] 	= 0; };
+		if (isNaN(OPT_SOL_MAX[i])) { OPT_SOL_MAX[i]  = 0; };
 	}
 	for (i=0;i<14;i++){
 		OPT_SOL_ADD[i] = parseInt(Temp2[100 + i]);
-		if (isNaN(OPT_SOL_ADD[i])) { OPT_SOL_ADD[i] 	= 0; };
+		if (isNaN(OPT_SOL_ADD[i])) { OPT_SOL_ADD[i]  = 0; };
 	}
-	OPT_BLD_SOL 	= parseInt(Temp2[114]);
+	OPT_BLD_SOL  = parseInt(Temp2[114]);
 
 
 
 
-	OPT_BLD_WOOD 	= parseInt(Temp2[115]);
-	OPT_BLD_STONE 	= parseInt(Temp2[116]);
-	OPT_BLD_IRON 	= parseInt(Temp2[117]);
-	OPT_BLD_RICE 	= parseInt(Temp2[118]);
+	OPT_BLD_WOOD  = parseInt(Temp2[115]);
+	OPT_BLD_STONE  = parseInt(Temp2[116]);
+	OPT_BLD_IRON  = parseInt(Temp2[117]);
+	OPT_BLD_RICE  = parseInt(Temp2[118]);
 
 
 
 
-	if (isNaN(OPT_BLD_WOOD)) 	{ OPT_BLD_WOOD 	= 0; };
+	if (isNaN(OPT_BLD_WOOD))  { OPT_BLD_WOOD  = 0; };
 	if (isNaN(OPT_BLD_STONE)) { OPT_BLD_STONE = 0; };
-	if (isNaN(OPT_BLD_IRON)) 	{ OPT_BLD_IRON 	= 0; };
-	if (isNaN(OPT_BLD_RICE)) 	{ OPT_BLD_RICE 	= 0; };
+	if (isNaN(OPT_BLD_IRON))  { OPT_BLD_IRON  = 0; };
+	if (isNaN(OPT_BLD_RICE))  { OPT_BLD_RICE  = 0; };
 
 
 
 
 	for (i=0;i<14;i++){
 		OPT_BK_LV[i] = parseInt(Temp2[119 + i]);
-		if (isNaN(OPT_BK_LV[i])) { OPT_BK_LV[i] 	= 0; };
+		if (isNaN(OPT_BK_LV[i])) { OPT_BK_LV[i]  = 0; };
 	}
 
 
@@ -5932,7 +5932,7 @@ function Load_OPT(vId){
 
 	for (i=0;i<14;i++){
 		OPT_BG_LV[i] = parseInt(Temp2[133 + i]);
-		if (isNaN(OPT_BG_LV[i])) { OPT_BG_LV[i] 	= 0; };
+		if (isNaN(OPT_BG_LV[i])) { OPT_BG_LV[i]  = 0; };
 
 
 
@@ -5942,7 +5942,7 @@ function Load_OPT(vId){
 
 
 
-	OPT_BKBG_CHK 	= parseInt(Temp2[147]);
+	OPT_BKBG_CHK  = parseInt(Temp2[147]);
 
 
 
@@ -6209,8 +6209,8 @@ function computeTime(clock) {
 
 //日時文字列編集（yyyy/mm/dd hh:mm:ss）
 function generateDateString(date) {
-	var res = "" + date.getFullYear() + "/" + padZero(date.getMonth() + 1) +	
-		"/" + padZero(date.getDate()) + " " + padZero(date.getHours()) + ":" +	
+	var res = "" + date.getFullYear() + "/" + padZero(date.getMonth() + 1) + 
+		"/" + padZero(date.getDate()) + " " + padZero(date.getHours()) + ":" + 
 		padZero(date.getMinutes()) + ":" + padZero(date.getSeconds());
 	return res;
 }
@@ -6220,8 +6220,8 @@ function generateDateString(date) {
 
 //日時文字列編集2（mm/dd hh:mm:ss）
 function generateDateString2(date) {
-	var res = "" + padZero(date.getMonth() + 1) + "/" + padZero(date.getDate()) +	
-		" " + padZero(date.getHours()) + ":" + padZero(date.getMinutes()) +	
+	var res = "" + padZero(date.getMonth() + 1) + "/" + padZero(date.getDate()) + 
+		" " + padZero(date.getHours()) + ":" + padZero(date.getMinutes()) + 
 		":" + padZero(date.getSeconds());;
 	return res;
 }
@@ -6381,34 +6381,34 @@ function cgetTextBoxValue(id)
 }
 function ccreateComboBox(container, id, sels, def, text, title, left )
 {
-	 	 left += 2;
-	 	 var dv = d.createElement("div");
-	 	 dv.style.padding = "1px";
-	 	 dv.style.paddingLeft= left + "px";
-	 	 dv.title = title;
-	 	 var sel = d.createElement("select");
-	 	 sel.id = id;
-	 	 for(var i=0; i<sels.length; i++){
-	 	 	 	 var opt = d.createElement("option");
-	 	 	 	 opt.value = sels[i];
-	 	 	 	 opt.appendChild(d.createTextNode(sels[i]));
-	 	 	 	 sel.appendChild(opt);
-	 	 }
-	 	 if( def ) sel.value = def;
+    left += 2;
+    var dv = d.createElement("div");
+    dv.style.padding = "1px";
+    dv.style.paddingLeft= left + "px";
+    dv.title = title;
+    var sel = d.createElement("select");
+    sel.id = id;
+    for(var i=0; i<sels.length; i++){
+        var opt = d.createElement("option");
+        opt.value = sels[i];
+        opt.appendChild(d.createTextNode(sels[i]));
+        sel.appendChild(opt);
+    }
+    if( def ) sel.value = def;
 
 
 
 
-	 	 var tx = d.createTextNode(text);
-	 	 tx.title = title;
+    var tx = d.createTextNode(text);
+    tx.title = title;
 
 
 
 
-	 	 dv.appendChild(tx);
-	 	 dv.appendChild(sel);
-	 	 container.appendChild(dv);
-	 	 return sel;
+    dv.appendChild(tx);
+    dv.appendChild(sel);
+    container.appendChild(dv);
+    return sel;
 }
 function cgetComboBoxValue(id){
 	var c = id;
@@ -6888,7 +6888,7 @@ function Chek_Sigen(area){
 
 
 	try {
-		if( costs[area.name].length <= parseInt(area.lv) || // maxinum level reached	
+		if( costs[area.name].length <= parseInt(area.lv) || // maxinum level reached 
 			RES_NOW.wood < costs[area.name][parseInt(area.lv)][0] ||
 			RES_NOW.stone< costs[area.name][parseInt(area.lv)][1] ||
 			RES_NOW.iron < costs[area.name][parseInt(area.lv)][2] ||
@@ -6954,13 +6954,13 @@ function getSoldier() {
 
 
 		GM_xmlhttpRequest({
-			method:"GET",	
+			method:"GET", 
 			url:"http://" + HOST + "/facility/unit_status.php",
 			headers:{"Content-type":"text/html"},
 			overrideMimeType:'text/html; charset=utf-8',
 			onload:function(x){
 				var htmldoc = document.createElement("html");
-			 	 	 	 	htmldoc.innerHTML = x.responseText;
+			        htmldoc.innerHTML = x.responseText;
 
 
 
@@ -7074,27 +7074,27 @@ function make_soldier(attackerData){
 
 	var make_loop = function(loop) {
 		if (loop == 5) {
-			sort_priority[0] 	= make_no["剣兵"];
-			sort_priority[1] 	= make_no["弓兵"];
-			sort_priority[2] 	= make_no["弩兵"];
-			sort_priority[3] 	= make_no["騎兵"];
-			sort_priority[4] 	= make_no["近衛騎兵"];
-			sort_priority[5] 	= make_no["槍兵"];
-			sort_priority[6] 	= make_no["矛槍兵"];
-			sort_priority[7] 	= make_no["斥候"];
-			sort_priority[8] 	= make_no["斥候騎兵"];
-			sort_priority[9] 	= make_no["衝車"];
+			sort_priority[0]  = make_no["剣兵"];
+			sort_priority[1]  = make_no["弓兵"];
+			sort_priority[2]  = make_no["弩兵"];
+			sort_priority[3]  = make_no["騎兵"];
+			sort_priority[4]  = make_no["近衛騎兵"];
+			sort_priority[5]  = make_no["槍兵"];
+			sort_priority[6]  = make_no["矛槍兵"];
+			sort_priority[7]  = make_no["斥候"];
+			sort_priority[8]  = make_no["斥候騎兵"];
+			sort_priority[9]  = make_no["衝車"];
 			sort_priority[10] = make_no["投石機"];
 
 
 
 
-	 	 	 	 	 	 sort_priority.sort( function(a, b) { if (a[6] < b[6]) return 1; if (a[6] > b[6]) return -1; return 0;});
+            sort_priority.sort( function(a, b) { if (a[6] < b[6]) return 1; if (a[6] > b[6]) return -1; return 0;});
 
 
 
 
-			for (var i=0;i<11;i++){	
+			for (var i=0;i<11;i++){ 
 				if (sort_priority[i][2] == 1 && sort_priority[i][6] != 0){
 					// 兵作成
 					if ((OPT_SOL_ADD[sort_priority[i][1] - 300] != 0) && (OPT_SOL_ADD[sort_priority[i][1] - 300] < sort_priority[i][3])){
@@ -7155,13 +7155,13 @@ function make_soldier(attackerData){
 
 
 				GM_xmlhttpRequest({
-					method:"GET",	
+					method:"GET", 
 					url: mURL,
 					headers:{"Content-type":"text/html"},
 					overrideMimeType:'text/html; charset=utf-8',
 					onload:function(x){
 						var htmldoc = document.createElement("html");
-					 	 	 	 	htmldoc.innerHTML = x.responseText;
+					        htmldoc.innerHTML = x.responseText;
 
 
 
@@ -7170,7 +7170,7 @@ function make_soldier(attackerData){
 						if (makeElem.snapshotLength > 0) {
 							// 兵士は作成中
 						} else {
-							var makeElem 	= document.evaluate('//th[@class="mainTtl"]',htmldoc, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+							var makeElem  = document.evaluate('//th[@class="mainTtl"]',htmldoc, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
 
 
 
@@ -7215,20 +7215,20 @@ function make_soldier(attackerData){
 
 function sumMaxSoldier(type){
 	var SoldierCost = [
-		[ 	 1, 	 1, 	 1, 	 1],
-		[ 	11, 	 1, 	11, 	61],	// 301 剣兵
-		[ 	 1, 	 1, 	 1, 	 1],
-		[ 	88, 132, 	 1, 	21],	// 303 槍兵
-		[ 264, 396, 	 1, 	61],	// 304 矛槍兵
-		[ 	 1, 128, 192, 	41],	// 305 騎兵
-		[ 	 1, 	 1, 	 1, 	 1],
-		[ 	 1, 384, 576, 121],	// 307 近衛騎兵
-		[ 144, 	 1, 	96, 	35],	// 308 弓兵
-		[ 432, 	 1, 288, 105],	// 309 弩兵
-		[ 151, 151, 151, 	 1],	// 310 斥候
-		[ 451, 451, 451, 	31],	// 311 斥候騎兵
-		[ 501, 	 1, 501, 	 1],	// 312 衝車
-		[ 	 1,1501,1501, 	 1]	// 313 投石機
+		[   1,   1,   1,   1],
+		[  11,   1,  11,  61],	// 301 剣兵
+		[   1,   1,   1,   1],
+		[  88, 132,   1,  21],	// 303 槍兵
+		[ 264, 396,   1,  61],	// 304 矛槍兵
+		[   1, 128, 192,  41],	// 305 騎兵
+		[   1,   1,   1,   1],
+		[   1, 384, 576, 121],	// 307 近衛騎兵
+		[ 144,   1,  96,  35],	// 308 弓兵
+		[ 432,   1, 288, 105],	// 309 弩兵
+		[ 151, 151, 151,   1],	// 310 斥候
+		[ 451, 451, 451,  31],	// 311 斥候騎兵
+		[ 501,   1, 501,   1],	// 312 衝車
+		[   1,1501,1501,   1]	// 313 投石機
 	];
 
 
@@ -7253,18 +7253,18 @@ function sumMaxSoldier(type){
 
 
 
-	countWood 	= parseInt((wood 	- OPT_BLD_WOOD) 	/ SoldierCost[type][0]);
+	countWood  = parseInt((wood  - OPT_BLD_WOOD)  / SoldierCost[type][0]);
 	countStone = parseInt((stone - OPT_BLD_STONE) / SoldierCost[type][1]);
-	countIron 	= parseInt((iron 	- OPT_BLD_IRON) 	/ SoldierCost[type][2]);
-	countRice 	= parseInt((rice 	- OPT_BLD_RICE) 	/ SoldierCost[type][3]);
+	countIron  = parseInt((iron  - OPT_BLD_IRON)  / SoldierCost[type][2]);
+	countRice  = parseInt((rice  - OPT_BLD_RICE)  / SoldierCost[type][3]);
 
 
 
 
 	var MaxSoldir = countWood;
 	if (MaxSoldir > countStone) { MaxSoldir = countStone; }
-	if (MaxSoldir > countIron) 	{ MaxSoldir = countIron; }
-	if (MaxSoldir > countRice) 	{ MaxSoldir = countRice; }
+	if (MaxSoldir > countIron)  { MaxSoldir = countIron; }
+	if (MaxSoldir > countRice)  { MaxSoldir = countRice; }
 
 
 
@@ -7315,16 +7315,16 @@ function OverFlowPrevention() {
 
 	// 現在の状態
 	var RES_NOW = [];
-	RES_NOW["wood"]		= parseInt( $("wood").innerHTML, 	 	 10 );	// 資源：木
-	RES_NOW["stone"]	= parseInt( $("stone").innerHTML, 	 	10 );	// 資源：石
-	RES_NOW["iron"]		= parseInt( $("iron").innerHTML, 	 	 10 );	// 資源：鉄
-	RES_NOW["rice"]		= parseInt( $("rice").innerHTML, 	 	 10 );	// 資源：糧
+	RES_NOW["wood"]		= parseInt( $("wood").innerHTML,     10 );	// 資源：木
+	RES_NOW["stone"]	= parseInt( $("stone").innerHTML,    10 );	// 資源：石
+	RES_NOW["iron"]		= parseInt( $("iron").innerHTML,     10 );	// 資源：鉄
+	RES_NOW["rice"]		= parseInt( $("rice").innerHTML,     10 );	// 資源：糧
 	RES_NOW["storagemax"]	= parseInt( $("rice_max").innerHTML, 10 );	// 倉庫容量
 
 
 
 
-	var OverFlowLimit 	= Math.floor(RES_NOW["storagemax"] * 0.95);		// 限界容量（倉庫の95%）
+	var OverFlowLimit  = Math.floor(RES_NOW["storagemax"] * 0.95);		// 限界容量（倉庫の95%）
 	var ChangeSigenNum = Math.floor(RES_NOW["storagemax"] * 0.05);		// 変換量（倉庫の5%）
 
 
@@ -7333,9 +7333,9 @@ function OverFlowPrevention() {
 	// 資源：木石鉄が限界を超えている場合
 	if ( (RES_NOW["wood"] > OverFlowLimit) && (RES_NOW["stone"] > OverFlowLimit) && (RES_NOW["iron"] > OverFlowLimit) ) {
 		var max_sigen = 0;
-		if (RES_NOW["wood"] 	> max_sigen) { max_sigen = RES_NOW["wood"]; 	ChangeSigenNum = Math.floor(RES_NOW["wood"] 	* 0.01); }
+		if (RES_NOW["wood"]  > max_sigen) { max_sigen = RES_NOW["wood"];  ChangeSigenNum = Math.floor(RES_NOW["wood"]  * 0.01); }
 		if (RES_NOW["stone"] > max_sigen) { max_sigen = RES_NOW["stone"]; ChangeSigenNum = Math.floor(RES_NOW["stone"] * 0.01); }
-		if (RES_NOW["iron"] 	> max_sigen) { max_sigen = RES_NOW["iron"]; 	ChangeSigenNum = Math.floor(RES_NOW["iron"] 	* 0.01); }
+		if (RES_NOW["iron"]  > max_sigen) { max_sigen = RES_NOW["iron"];  ChangeSigenNum = Math.floor(RES_NOW["iron"]  * 0.01); }
 
 
 
@@ -7345,11 +7345,11 @@ function OverFlowPrevention() {
 
 
 		if(RES_NOW["wood"] == max_sigen) {
-			changeResorceToResorce(WOOD, 	ChangeSigenNum, RICE, ichiba_x, ichiba_y);	
+			changeResorceToResorce(WOOD,  ChangeSigenNum, RICE, ichiba_x, ichiba_y); 
 		} else if(RES_NOW["stone"] == max_sigen) {
-			changeResorceToResorce(STONE, ChangeSigenNum, RICE, ichiba_x, ichiba_y);	
+			changeResorceToResorce(STONE, ChangeSigenNum, RICE, ichiba_x, ichiba_y); 
 		} else if(RES_NOW["iron"] == max_sigen) {
-			changeResorceToResorce(IRON, 	ChangeSigenNum, RICE, ichiba_x, ichiba_y);
+			changeResorceToResorce(IRON,  ChangeSigenNum, RICE, ichiba_x, ichiba_y);
 		}
 
 
@@ -7361,15 +7361,15 @@ function OverFlowPrevention() {
 		// 一番少ない資源を探せ！
 		var min_sigen = 9999999999;
 		if (RES_NOW["stone"] < min_sigen) { min_sigen = RES_NOW["stone"]; }
-		if (RES_NOW["iron"] 	< min_sigen) { min_sigen = RES_NOW["iron"]; }
+		if (RES_NOW["iron"]  < min_sigen) { min_sigen = RES_NOW["iron"]; }
 
 
 
 
 		if(RES_NOW["stone"] == min_sigen) {
-			changeResorceToResorce(WOOD, ChangeSigenNum, STONE, ichiba_x, ichiba_y);	
+			changeResorceToResorce(WOOD, ChangeSigenNum, STONE, ichiba_x, ichiba_y); 
 		} else if(RES_NOW["iron"] == min_sigen) {
-			changeResorceToResorce(WOOD, ChangeSigenNum, IRON, ichiba_x, ichiba_y);	
+			changeResorceToResorce(WOOD, ChangeSigenNum, IRON, ichiba_x, ichiba_y); 
 		}
 	}
 
@@ -7380,16 +7380,16 @@ function OverFlowPrevention() {
 	if (RES_NOW["stone"] > OverFlowLimit) {
 		// 一番少ない資源を探せ！
 		var min_sigen = 9999999999;
-		if (RES_NOW["wood"] 	< min_sigen) { min_sigen = RES_NOW["wood"]; }
-		if (RES_NOW["iron"] 	< min_sigen) { min_sigen = RES_NOW["iron"]; }
+		if (RES_NOW["wood"]  < min_sigen) { min_sigen = RES_NOW["wood"]; }
+		if (RES_NOW["iron"]  < min_sigen) { min_sigen = RES_NOW["iron"]; }
 
 
 
 
 		if(RES_NOW["wood"] == min_sigen) {
-			changeResorceToResorce(STONE, ChangeSigenNum, WOOD, ichiba_x, ichiba_y);	
+			changeResorceToResorce(STONE, ChangeSigenNum, WOOD, ichiba_x, ichiba_y); 
 		} else if(RES_NOW["iron"] == min_sigen) {
-			changeResorceToResorce(STONE, ChangeSigenNum, IRON, ichiba_x, ichiba_y);	
+			changeResorceToResorce(STONE, ChangeSigenNum, IRON, ichiba_x, ichiba_y); 
 		}
 	}
 
@@ -7400,16 +7400,16 @@ function OverFlowPrevention() {
 	if (RES_NOW["iron"] > OverFlowLimit) {
 		// 一番少ない資源を探せ！
 		var min_sigen = 9999999999;
-		if (RES_NOW["wood"] 	< min_sigen) { min_sigen = RES_NOW["wood"]; }
+		if (RES_NOW["wood"]  < min_sigen) { min_sigen = RES_NOW["wood"]; }
 		if (RES_NOW["stone"] < min_sigen) { min_sigen = RES_NOW["stone"]; }
 
 
 
 
 		if(RES_NOW["wood"] == min_sigen) {
-			changeResorceToResorce(IRON, ChangeSigenNum, WOOD, ichiba_x, ichiba_y);	
+			changeResorceToResorce(IRON, ChangeSigenNum, WOOD, ichiba_x, ichiba_y); 
 		} else if(RES_NOW["stone"] == min_sigen) {
-			changeResorceToResorce(IRON, ChangeSigenNum, STONE, ichiba_x, ichiba_y);	
+			changeResorceToResorce(IRON, ChangeSigenNum, STONE, ichiba_x, ichiba_y); 
 		}
 	}
 
@@ -7420,17 +7420,17 @@ function OverFlowPrevention() {
 	if (RES_NOW["rice"] > OverFlowLimit) {
 		// 一番少ない資源を探せ！
 		var min_sigen = 9999999999;
-		if (RES_NOW["wood"] 	< min_sigen) { min_sigen = RES_NOW["wood"]; }
+		if (RES_NOW["wood"]  < min_sigen) { min_sigen = RES_NOW["wood"]; }
 		if (RES_NOW["stone"] < min_sigen) { min_sigen = RES_NOW["stone"]; }
-		if (RES_NOW["iron"] 	< min_sigen) { min_sigen = RES_NOW["iron"]; }
+		if (RES_NOW["iron"]  < min_sigen) { min_sigen = RES_NOW["iron"]; }
 
 
 
 
 		if(RES_NOW["wood"] == min_sigen) {
-			changeResorceToResorce(RICE, ChangeSigenNum, WOOD, ichiba_x, ichiba_y);	
+			changeResorceToResorce(RICE, ChangeSigenNum, WOOD, ichiba_x, ichiba_y); 
 		} else if(RES_NOW["stone"] == min_sigen) {
-			changeResorceToResorce(RICE, ChangeSigenNum, STONE, ichiba_x, ichiba_y);	
+			changeResorceToResorce(RICE, ChangeSigenNum, STONE, ichiba_x, ichiba_y); 
 		} else if(RES_NOW["iron"] == min_sigen) {
 			changeResorceToResorce(RICE, ChangeSigenNum, IRON, ichiba_x, ichiba_y);
 		}
@@ -7505,7 +7505,7 @@ function ichibaChange(vId) {
 	CHG_NOW["stone"] = 1;
 	CHG_NOW["iron"] = 1;
 /*
-	var OverFlowLimit 	= RES_NOW["storagemax"];		// 限界容量（倉庫の100%）
+	var OverFlowLimit  = RES_NOW["storagemax"];		// 限界容量（倉庫の100%）
 
 
 
@@ -7516,32 +7516,32 @@ function ichibaChange(vId) {
 			// 糧も100%の場合各資源の1%を寄付する
 			var c={};
 			c['contributionForm'] = "";
-			c['wood'] 	= Math.floor(RES_NOW["wood"] 	* 0.01);
+			c['wood']  = Math.floor(RES_NOW["wood"]  * 0.01);
 			c['stone'] = Math.floor(RES_NOW["stone"] * 0.01);
-			c['iron'] 	= Math.floor(RES_NOW["iron"] 	* 0.01);
-			c['rice'] 	= Math.floor(RES_NOW["rice"] 	* 0.01);
+			c['iron']  = Math.floor(RES_NOW["iron"]  * 0.01);
+			c['rice']  = Math.floor(RES_NOW["rice"]  * 0.01);
 			c['contribution'] = 1;
 			j$.post("http://"+HOST+"/alliance/level.php",c,function(){});
 			var tid=setTimeout(function(){location.reload(false);},INTERVAL);
 		}
 		return;
 	}
-*/ [#t7cf9010]
+*/
 
 
 
 
 	// @@ 2011.06.22 設定上限が0以下の場合倉庫上限に変更
-	if (OPT_MAX_WOOD 	< 1) { OPT_MAX_WOOD 	= RES_NOW["storagemax"]; }
+	if (OPT_MAX_WOOD  < 1) { OPT_MAX_WOOD  = RES_NOW["storagemax"]; }
 	if (OPT_MAX_STONE < 1) { OPT_MAX_STONE = RES_NOW["storagemax"]; }
-	if (OPT_MAX_IRON 	< 1) { OPT_MAX_IRON 	= RES_NOW["storagemax"]; }
+	if (OPT_MAX_IRON  < 1) { OPT_MAX_IRON  = RES_NOW["storagemax"]; }
 
 
 
 
-	if (RES_NOW["wood"] 	>= OPT_MAX_WOOD) {	CHG_NOW["wood"] 	= 0; }
+	if (RES_NOW["wood"]  >= OPT_MAX_WOOD) {	CHG_NOW["wood"]  = 0; }
 	if (RES_NOW["stone"] >= OPT_MAX_STONE){	CHG_NOW["stone"] = 0; }
-	if (RES_NOW["iron"] 	>= OPT_MAX_IRON) {	CHG_NOW["iron"] 	= 0; }
+	if (RES_NOW["iron"]  >= OPT_MAX_IRON) {	CHG_NOW["iron"]  = 0; }
 
 
 
@@ -7579,10 +7579,10 @@ function ichibaChange(vId) {
 		var villages = loadVillages(HOST+PGNAME);
 		var nextIndex = -1;
 		for(var i=0; i<villages.length;i++){
-	 	 		if(shoplist[0].vId == villages[i][IDX_XY]){
-	 	 	 	 	 	 	nextIndex = i;
-		 	 	 	 	break;
-		 	 	}
+	    	if(shoplist[0].vId == villages[i][IDX_XY]){
+	            nextIndex = i;
+		        break;
+		    }
 		}
 		if (nextIndex != -1) {
 			ShopFlg = true;
@@ -7591,7 +7591,7 @@ function ichibaChange(vId) {
 		return;
 	}
 /*
-	 	 	 	 	 	 sort_priority.sort( function(a, b) { if (a[6] < b[6]) return 1; if (a[6] > b[6]) return -1; return 0;});
+            sort_priority.sort( function(a, b) { if (a[6] < b[6]) return 1; if (a[6] > b[6]) return -1; return 0;});
 
 
 
@@ -7603,9 +7603,9 @@ function ichibaChange(vId) {
 	for (var i=0 ; i<shoplist.length ; i++) {
 		if (shopLv < shoplist[i].lv) {
 			shopVid = shoplist[i].vId;
-			shopLv 	= shoplist[i].lv;
-			shopX 	 = shoplist[i].x;
-			shopY 	 = shoplist[i].y;
+			shopLv  = shoplist[i].lv;
+			shopX   = shoplist[i].x;
+			shopY   = shoplist[i].y;
 		}
 	}
 	// どこにも市場がない
@@ -7617,19 +7617,19 @@ function ichibaChange(vId) {
 		// 一番市場のレベルの高い拠点へ移動
 		var villages = loadVillages(HOST+PGNAME);
 		var nextIndex = -1;
-	 		
+    
 		for(var i=0; i<villages.length;i++){
-	 	 		if(shopVid == villages[i][IDX_XY]){
-	 	 	 	 	 	 	nextIndex = i;
-		 	 	 	 	break;
-		 	 	}
+	    	if(shopVid == villages[i][IDX_XY]){
+	            nextIndex = i;
+		        break;
+		    }
 		}
 		if (nextIndex != -1) {
 			ShopURL = villages[nextIndex][IDX_URL];
 		}
 		return;
 	}
-*/ [#z68cd26e]
+*/
 
 
 
@@ -7655,9 +7655,9 @@ function ichibaChange(vId) {
 
 
 
-		if((OPT_TO_WOOD 	> 0) && (RES_NOW["wood"] 	< min_sigen && CHG_NOW["wood"] == 1)) { min_sigen = RES_NOW["wood"] };
+		if((OPT_TO_WOOD  > 0) && (RES_NOW["wood"]  < min_sigen && CHG_NOW["wood"] == 1)) { min_sigen = RES_NOW["wood"] };
 		if((OPT_TO_STONE > 0) && (RES_NOW["stone"] < min_sigen && CHG_NOW["stone"] == 1)) { min_sigen = RES_NOW["stone"]; }
-		if((OPT_TO_IRON 	> 0) && (RES_NOW["iron"] 	< min_sigen && CHG_NOW["iron"] == 1)) { min_sigen = RES_NOW["iron"]; }
+		if((OPT_TO_IRON  > 0) && (RES_NOW["iron"]  < min_sigen && CHG_NOW["iron"] == 1)) { min_sigen = RES_NOW["iron"]; }
 
 
 
@@ -7687,7 +7687,7 @@ function ichibaChange(vId) {
 			changeResorceToResorce(RICE, OPT_TO_WOOD, WOOD, ichiba_x, ichiba_y);
 			changeResorceToResorce(RICE, OPT_TO_STONE, STONE, ichiba_x, ichiba_y);
 			changeResorceToResorce(RICE, OPT_TO_IRON, IRON, ichiba_x, ichiba_y);
-*/ [#y4b61d77]
+*/
 			if(CHG_NOW["wood"]			== 1)	{
 				changeResorceToResorce(RICE, OPT_TO_WOOD,		WOOD,		ichiba_x,	ichiba_y);
 //				console.log(location.hostname + "【一括】糧変換 to 木：" + OPT_TO_WOOD);
@@ -7813,7 +7813,7 @@ function sendDonate(rice) {
 	var data = "contributionForm=&wood=0&stone=0&iron=0&rice=" + rice + "&contribution=1";
 	var tid=setTimeout(function(){
 		GM_xmlhttpRequest({
-			method:"POST",	
+			method:"POST", 
 			url:"http://" + HOST + "/alliance/level.php",
 			headers:{"Content-type":"application/x-www-form-urlencoded"},
 			data: data,
@@ -7821,7 +7821,7 @@ function sendDonate(rice) {
 			onload:function(x){;}
 		});
 	},INTERVAL);
-*/ [#ldcf6ac4]
+*/
 	var c={};
 	c['contributionForm'] = "";
 	c['wood'] = 0;
@@ -7845,17 +7845,17 @@ function Auto_Domestic() {
 	
 	var tid=setTimeout(function(){
 		GM_xmlhttpRequest({
-			method:"GET",	
+			method:"GET", 
 			url:"http://" + HOST + "/card/domestic_setting.php",
 			headers:{"Content-type":"text/html"},
 			overrideMimeType:'text/html; charset=utf-8',
 			onload:function(x){
 				
 				var htmldoc = document.createElement("html");
-			 	 	 	 	htmldoc.innerHTML = x.responseText;
-			 	 	 	 	
-		 	 	 	 		var skillElem = document.evaluate('//*[@class="skill"]',htmldoc, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-		 	 	 	 		console.log(skillElem);
+			        htmldoc.innerHTML = x.responseText;
+			        
+		        	var skillElem = document.evaluate('//*[@class="skill"]',htmldoc, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+		        	console.log(skillElem);
 				if(skillElem.snapshotLength < 1){return;}
 
 
@@ -7968,13 +7968,13 @@ function ccreateCheckBox0(container, id, def, text, title, left, villages)
 	cb.id = id;
 	//cb.value = 1;
 	//if( def ) cb.checked = true;
-	cb.checked 	= def;
-	cb.addEventListener("change",	
+	cb.checked  = def;
+	cb.addEventListener("change", 
 // @@@
 		function() {
-		 	 	for (var i = 0; i < villages.length; i++) {
-	 	 	 	 	 	 	GM_setValue(HOST+PGNAME+"OPT_CHKBOX_AVC_" + i, document.getElementById('OPT_CHKBOX_AVC_' + i).checked);
-	 	 	 	 	}
+		    for (var i = 0; i < villages.length; i++) {
+	            GM_setValue(HOST+PGNAME+"OPT_CHKBOX_AVC_" + i, document.getElementById('OPT_CHKBOX_AVC_' + i).checked);
+	        }
 		}, true);
 
 
@@ -8012,7 +8012,7 @@ function ccreateCheckBoxKai2(container, id, def, text, title, left )
 
 
 
-	var def2 = id 	+ "" 	+ "[" + def + "]";
+	var def2 = id  + ""  + "[" + def + "]";
 
 
 
@@ -8030,11 +8030,11 @@ function ccreateCheckBoxKai2(container, id, def, text, title, left )
 	var tb = d.createElement("input");
 	tb.type = "text";
 	tb.id = id + "LV" + def;
-	tb.value = eval(id 	+ "LV" 	+ "[" + def + "]");
+	tb.value = eval(id  + "LV"  + "[" + def + "]");
 	tb.style.verticalAlign = "middle";
 	tb.style.textAlign = "right";
 	tb.style.paddingRight = "3px";
-	//console.log(id 	+ "LV" 	+ "[" + def + "] =" + eval(id 	+ "LV" 	+ "[" + def + "]"));
+	//console.log(id  + "LV"  + "[" + def + "] =" + eval(id  + "LV"  + "[" + def + "]"));
 	tb.size = 4;
 	
 	dv.appendChild(cb);
@@ -8061,7 +8061,7 @@ function JSSleep(sec) {
 ///////////////////////////////////////////////
 function sortAction(actions) {
 	actions.sort(function(val1, val2) {
-		var diff = (new Date(val1[IDX2_TIME])).getTime()	
+		var diff = (new Date(val1[IDX2_TIME])).getTime() 
 			- (new Date(val2[IDX2_TIME])).getTime();
 		return diff;
 	});
@@ -8116,7 +8116,7 @@ function getVillageActions() {
 			var tempStr1 = buildStatusElem.snapshotItem(0).innerHTML.split("を");
 			buildStatus = "研究所:" + tempStr1[0];
 			newAction[IDX2_DELETE] = false;
-*/ [#jbeeae5a]
+*/
 			continue;
 		}
 		newAction[IDX2_ROTATION] = 0;
@@ -8254,7 +8254,7 @@ function createActionDiv(action, nowTime, baseXy, host) {
 		delLink.innerHTML = "済";
 		
 		var key = host + DELIMIT1 + baseXy + DELIMIT1 + action[IDX2_TIME];
-		delLink.addEventListener("click",	
+		delLink.addEventListener("click", 
 			(function(key_) {
 				return function() { deleteAction(key_); }
 			})(key), true);
@@ -8295,7 +8295,7 @@ function confirmTimer() {
 		closeIniBilderBox()
 		openIniBilderBox()
 	}
-*/ [#ka0ed17a]
+*/
 	closeIniBilderBox()
 	openIniBilderBox()
 
@@ -8331,7 +8331,7 @@ function deleteAction(key) {
 		for (var i = 0; i < villages.length; i++) {
 			for (var j = 0; j < villages[i][IDX_ACTIONS].length; j++) {
 				var action = villages[i][IDX_ACTIONS][j];
-				var curKey = hosts[ii] + DELIMIT1 +	
+				var curKey = hosts[ii] + DELIMIT1 + 
 					villages[i][IDX_XY] + DELIMIT1 + action[IDX2_TIME];
 				if (key == curKey) {
 					exists = true;
@@ -8374,7 +8374,7 @@ function getTrainingSoldier() {
 
 
 	//作業中情報取得
-	var idx = 0;	
+	var idx = 0; 
 	while (1) {
 		var clockElem = document.getElementById("area_timer" + idx);
 		if (clockElem == undefined) break;
@@ -8436,7 +8436,7 @@ function getMyVillage() {
 function getMyXY() {
 	var d = document;
 	var $x = function(xp,dc) {
-		return document.evaluate(xp, dc||d, null,	
+		return document.evaluate(xp, dc||d, null, 
 			XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
 	};
 
@@ -8448,12 +8448,12 @@ function getMyXY() {
 
 
 	var gnaviorgNav = d.getElementById("gnavi");
-	 	 if(gnaviorgNav) {
-	 		
+    if(gnaviorgNav) {
+    
 		var nowLoc = $x('id("gnavi")//a[contains(@href,"map.php")]');
-	 	 	 	 }else{
-			var nowLoc = $x('id("gNav")//a[contains(@href,"map.php")]');}
-	 	
+        }else{
+ 		var nowLoc = $x('id("gNav")//a[contains(@href,"map.php")]');}
+   
 
 
 
@@ -8572,7 +8572,7 @@ function getNextTime(hostname, baseTime) {
 			if (actionTime > baseTime && actionTime < nextTime) {
 				var type = actions[j][IDX2_TYPE].charAt(0);
 				nextTime = actionTime;
-				nextURL 	= villages[i][IDX_URL];
+				nextURL  = villages[i][IDX_URL];
 				nextNAME = villages[i][IDX_BASE_NAME];
 			}
 		}
