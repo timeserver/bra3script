@@ -2623,6 +2623,89 @@ function InitRiceParadise(){
 	var checkbox = $a('//input[@id="OPT_KATEMURA"]');  checkbox[0].checked = true; // 糧村化
 }
 
+
+
+
+function InitBaseCamp(){
+	// 本拠地
+	clearInifacBox();
+	var checkbox = $a('//input[@id="OPT_CHKBOX0"]');   checkbox[0].checked = true;	// 拠点
+	var checkbox = $a('//input[@id="OPT_CHKBOX1"]');   checkbox[0].checked = true;	// 伐採所
+	var checkbox = $a('//input[@id="OPT_CHKBOX2"]');   checkbox[0].checked = true;	// 石切り場
+	var checkbox = $a('//input[@id="OPT_CHKBOX3"]');   checkbox[0].checked = true;	// 製鉄所
+	var checkbox = $a('//input[@id="OPT_CHKBOX4"]');   checkbox[0].checked = true;	// 畑
+	var checkbox = $a('//input[@id="OPT_CHKBOX5"]');   checkbox[0].checked = true;	// 倉庫
+	var checkbox = $a('//input[@id="OPT_CHKBOX6"]');   checkbox[0].checked = true;	// 銅雀台
+
+	var checkbox = $a('//input[@id="OPT_CHKBOX7"]');   checkbox[0].checked = true;	// 鍛冶場
+	var checkbox = $a('//input[@id="OPT_CHKBOX8"]');   checkbox[0].checked = true;	// 防具工場
+	var checkbox = $a('//input[@id="OPT_CHKBOX9"]');   checkbox[0].checked = true;	// 練兵所
+
+	var checkbox = $a('//input[@id="OPT_CHKBOX10"]');  checkbox[0].checked = true;	// 兵舎
+	var checkbox = $a('//input[@id="OPT_CHKBOX11"]');  checkbox[0].checked = true;	// 弓兵舎
+	var checkbox = $a('//input[@id="OPT_CHKBOX12"]');  checkbox[0].checked = true;	// 厩舎
+	var checkbox = $a('//input[@id="OPT_CHKBOX14"]');  checkbox[0].checked = true;	// 兵器工房
+	var checkbox = $a('//input[@id="OPT_CHKBOX13"]');  checkbox[0].checked = true;	// 宿舎
+	var checkbox = $a('//input[@id="OPT_CHKBOX20"]');  checkbox[0].checked = true;	// 大宿舎
+	
+	var checkbox = $a('//input[@id="OPT_CHKBOX15"]');  checkbox[0].checked = true;	// 市場
+	var checkbox = $a('//input[@id="OPT_CHKBOX16"]');  checkbox[0].checked = true;	// 訓練所
+	var checkbox = $a('//input[@id="OPT_CHKBOX21"]');  checkbox[0].checked = true;	// 遠征訓練所
+	var checkbox = $a('//input[@id="OPT_CHKBOX19"]');  checkbox[0].checked = true;	// 研究所
+	var checkbox = $a('//input[@id="OPT_CHKBOX22"]');  checkbox[0].checked = true;	// 見張り台
+
+	var textbox = $a('//input[@id="OPT_CHKBOXLV0"]');   textbox[0].value = 10;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV1"]');   textbox[0].value = 13;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV2"]');   textbox[0].value = 13;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV3"]');   textbox[0].value = 13;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV4"]');   textbox[0].value = 15;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV5"]');   textbox[0].value = 20;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV6"]');   textbox[0].value = 10;
+
+	var textbox = $a('//input[@id="OPT_CHKBOXLV7"]');   textbox[0].value = 10;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV8"]');   textbox[0].value = 10;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV9"]');   textbox[0].value = 10;
+
+	var textbox = $a('//input[@id="OPT_CHKBOXLV10"]');   textbox[0].value = 13;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV11"]');   textbox[0].value = 13;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV12"]');   textbox[0].value = 13;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV14"]');   textbox[0].value = 13;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV13"]');   textbox[0].value = 15;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV20"]');   textbox[0].value = 20;
+
+	var textbox = $a('//input[@id="OPT_CHKBOXLV15"]');   textbox[0].value = 10;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV16"]');   textbox[0].value = 10;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV21"]');   textbox[0].value = 10;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV19"]');   textbox[0].value = 10;
+	var textbox = $a('//input[@id="OPT_CHKBOXLV22"]');   textbox[0].value = 10;
+
+	// 内政設定
+	var checkbox = $a('//input[@id="OPT_DOME1"]'); checkbox[0].checked = true; // 伐採知識
+	var checkbox = $a('//input[@id="OPT_DOME2"]'); checkbox[0].checked = true; // 伐採技術
+	var checkbox = $a('//input[@id="OPT_DOME3"]'); checkbox[0].checked = false; // 弓兵増強
+	var checkbox = $a('//input[@id="OPT_DOME4"]'); checkbox[0].checked = true; // 石切知識
+	var checkbox = $a('//input[@id="OPT_DOME5"]'); checkbox[0].checked = true; // 石切技術
+	var checkbox = $a('//input[@id="OPT_DOME6"]'); checkbox[0].checked = false; // 弓兵増強
+	var checkbox = $a('//input[@id="OPT_DOME7"]'); checkbox[0].checked = true; // 製鉄知識
+	var checkbox = $a('//input[@id="OPT_DOME8"]'); checkbox[0].checked = true; // 製鉄技術
+	var checkbox = $a('//input[@id="OPT_DOME9"]'); checkbox[0].checked = false; // 騎兵増強
+	var checkbox = $a('//input[@id="OPT_DOME10"]'); checkbox[0].checked = true; // 食糧知識
+	var checkbox = $a('//input[@id="OPT_DOME11"]'); checkbox[0].checked = true; // 食糧技術
+	var checkbox = $a('//input[@id="OPT_DOME12"]'); checkbox[0].checked = false; // 農林知識
+	var checkbox = $a('//input[@id="OPT_DOME13"]'); checkbox[0].checked = false; // 農林技術
+	var checkbox = $a('//input[@id="OPT_DOME14"]'); checkbox[0].checked = false; // 加工知識
+	var checkbox = $a('//input[@id="OPT_DOME15"]'); checkbox[0].checked = false; // 加工技術
+	var checkbox = $a('//input[@id="OPT_DOME16"]'); checkbox[0].checked = false; // 富国
+	var checkbox = $a('//input[@id="OPT_DOME17"]'); checkbox[0].checked = false; // 富国論
+	var checkbox = $a('//input[@id="OPT_DOME18"]'); checkbox[0].checked = false; // 富国強兵
+	var checkbox = $a('//input[@id="OPT_DOME19"]'); checkbox[0].checked = false; // 豊穣
+	var checkbox = $a('//input[@id="OPT_DOME20"]'); checkbox[0].checked = false; // 美玉歌舞
+	var checkbox = $a('//input[@id="OPT_DOME21"]'); checkbox[0].checked = false; // 呉の治世
+	var checkbox = $a('//input[@id="OPT_DOME22"]'); checkbox[0].checked = false; // 王佐の才
+	// 糧村オプション
+	var checkbox = $a('//input[@id="OPT_KATEMURA"]');  checkbox[0].checked = false; // 糧村化
+}
+
 function InitResVillage(){
 	// 資源村
 	clearInifacBox();
@@ -3437,6 +3520,7 @@ function addInifacHtml(vId) {
 
 	ccreateButton(td31, "遠征訓練所"  , "本拠地に遠征訓練所を建てる設定にします。",       function() {InitMilitaryHome()},85);
 	ccreateButton(td31, "糧村"  , "糧村の設定にします。", 	 function() {InitRiceParadise()});
+	ccreateButton(td31, "本拠地"  , "本拠地の設定にします。", 	 function() {InitBaseCamp()});
 	ccreateButton(td31, "資源村"  , "資源村の設定にします。", function() {InitResVillage()});
 	ccreateButton(td31, "軍事拠点"  , "軍事拠点の設定にします。", function() {InitMilitarySite()});
 	ccreateButton(td31, "初期化", "自動建設設定を消去します。", function() {clearInifacBox()});
