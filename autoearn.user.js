@@ -114,9 +114,14 @@
   buttonDispatchSoldier.id = "button_dispatch_soldier";
 //  buttonDispatchSoldier.value = "出兵";
   buttonDispatchSoldier.value = "TP";
+  var buttonDispatchSoldierAll = document.createElement("input");
+  buttonDispatchSoldierAll.type = "button";
+  buttonDispatchSoldierAll.id = "button_dispatch_soldier_all";
+  buttonDispatchSoldierAll.value = "出兵";
   divDispatchSoldier.appendChild(functionCreateTextBox("x_dispatch_soldier", "x_dispatch_soldier", "x:", 4));
   divDispatchSoldier.appendChild(functionCreateTextBox("y_dispatch_soldier", "y_dispatch_soldier", "y:", 4));
   divDispatchSoldier.appendChild(buttonDispatchSoldier);
+  divDispatchSoldier.appendChild(buttonDispatchSoldierAll);
 
   var buttonInvoke = document.createElement("input");
   buttonInvoke.type = "button";
@@ -145,17 +150,65 @@
 
   $('#button_dispatch_soldier').click(function() {
     for (var i = 0; i < eleDeck.snapshotLength; ++i) {
-      if (((eleDeck.snapshotItem(i).getElementsByTagName('dd')[0]).getElementsByTagName('div')[0]).childNodes[0].nodeValue == 500 && 
+//      console.log(((eleDeck.snapshotItem(i).getElementsByTagName('dd')[0]).getElementsByTagName('div')[0]).childNodes[0].nodeValue.slice(0, -1));
+      if (((eleDeck.snapshotItem(i).getElementsByTagName('dd')[0]).getElementsByTagName('div')[0]).childNodes[0].nodeValue.slice(0, -1) == "500" && 
           (eleDeck.snapshotItem(i).getElementsByTagName('dd')[2]).childNodes[0].nodeValue == "\n待機中") {
         var controllPos = 0;
-        if ((eleDeck.snapshotItem(i).getElementsByTagName('div')[7]).className == "control") {
-          controllPos = 7;
-        } else if ((eleDeck.snapshotItem(i).getElementsByTagName('div')[8]).className == "control") {
-          controllPos = 8;
-        } else {
-          controllPos = 9;
+        for (var j = 0; j < 25; ++j) {
+          if ((eleDeck.snapshotItem(i).getElementsByTagName('div')[j]).className == "control") {
+            controllPos = j;
+            break;
+          }
         }
-        ((eleDeck.snapshotItem(i).getElementsByTagName('div')[controllPos]).getElementsByTagName('img')[0]).onclick.toString().match(/operationExecution|.*?, (.*?), .*?/);
+
+        ((eleDeck.snapshotItem(i).getElementsByTagName('div')[controllPos]).getElementsByTagName('img')[0]).getAttribute("onclick").toString().match(/operationExecution|.*?, (.*?), .*?/);
+        var cardId = RegExp.$1;
+//        console.log("id:" + cardId + "  x:" + $('#x_dispatch_soldier').val() + "  y" + $('#y_dispatch_soldier').val());
+
+        setTimeout(function(cardId) {$.ajax({
+          type: "POST",
+          url: "/facility/castle_send_troop.php#ptop",
+          data: {
+            village_name: "",
+            village_x_value: $('#x_dispatch_soldier').val().toString(),
+            village_y_value: $('#y_dispatch_soldier').val().toString(),
+            unit_assign_card_id: cardId,
+            radio_move_type: "302",
+            show_beat_bandit_flg: "1",
+            infantry_count: "",
+            spear_count: "",
+            archer_count: "",
+            cavalry_count: "",
+            halbert_count: "",
+            crossbow_count: "",
+            cavalry_guards_count: "",
+            scout_count: "",
+            cavalry_scout_count: "",
+            ram_count: "",
+            catapult_count: "",
+            radio_reserve_type: "0",
+            x: "",
+            y: "",
+            card_id: "204",
+            btn_send: "出兵"
+          }
+        });}, i * 1000, cardId);
+      }
+    }
+  });
+
+  $('#button_dispatch_soldier_all').click(function() {
+    for (var i = 0; i < eleDeck.snapshotLength; ++i) {
+      if ((eleDeck.snapshotItem(i).getElementsByTagName('dd')[2]).childNodes[0].nodeValue == "\n待機中") {
+        var controllPos = 0;
+        for (var j = 0; j < 25; ++j) {
+          if ((eleDeck.snapshotItem(i).getElementsByTagName('div')[j]).className == "control") {
+            controllPos = j;
+            break;
+          }
+        }
+
+        ((eleDeck.snapshotItem(i).getElementsByTagName('div')[controllPos]).getElementsByTagName('img')[0]).getAttribute("onclick").toString().match(/operationExecution|.*?, (.*?), .*?/);
         var cardId = RegExp.$1;
 //        console.log("id:" + cardId + "  x:" + $('#x_dispatch_soldier').val() + "  y" + $('#y_dispatch_soldier').val());
 
